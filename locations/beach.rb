@@ -26,6 +26,10 @@ module BeachFish_model
       puts "You swing your fishing rod out into the water only to have it snap in half"
     else
       puts "You begin fishing"
+
+      result = fishing_rod.launch @controller.get('time')
+      # Wait 5 - 10 seconds
+      @console.prompt "You caught a #{result['name']}! #{result['description']}"
     end
   end
   def id
