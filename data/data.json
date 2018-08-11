@@ -4,7 +4,7 @@
     "name": "tin can",
     "rarity": -1,
     "description": "Junk item",
-    "requirments": null,
+    "requirements": null,
     "price": null
   },
   "a1": {
@@ -22,7 +22,7 @@
     "name": "Dark Fish",
     "rarity": 1,
     "description": "",
-    "requirments": {
+    "requirements": {
       "time": "night midnight"
     },
     "price": 50
@@ -32,7 +32,7 @@
     "name": "Guaba fish",
     "rarity": 2,
     "description": "What an ugly fish",
-    "requirments": {
+    "requirements": {
       "time": "midnight",
       "power": 2
     },
@@ -43,7 +43,7 @@
     "name": "boot",
     "rarity": 3,
     "description": "An old boot. Great",
-    "requirments": null,
+    "requirements": null,
     "price": 5
   },
   "a5": {
@@ -51,7 +51,7 @@
     "name": "sack of coins",
     "rarity": 4,
     "description": "A sack of coins! Kaching!",
-    "requirments": null,
+    "requirements": null,
     "price": 2500
   },
   "a6": {
@@ -59,7 +59,7 @@
     "name": "Dragon fish",
     "rarity": 4,
     "description": "A rare creature of the seas!",
-    "requirments": {
+    "requirements": {
       "power": 5
     },
     "price": 10000
@@ -69,7 +69,7 @@
     "name": "Dark Dragon fish",
     "rarity": 5,
     "description": "A legendary fish indeed!",
-    "requirments": {
+    "requirements": {
       "power": 7,
       "time": "midnight"
     },
@@ -80,7 +80,7 @@
     "name": "Whale",
     "rarity": 3,
     "description": "A magnificent whale!",
-    "requirments": {
+    "requirements": {
       "power": 20
     },
     "price": 50000
@@ -90,7 +90,7 @@
     "name": "Sea serpent",
     "rarity": 5,
     "description": "A slimy sea serpent!",
-    "requirments": {
+    "requirements": {
       "power": 2
     },
     "price": 50
@@ -100,7 +100,7 @@
     "name": "Lion shark",
     "rarity": 2,
     "description": "A fierce lion shark from the deep!",
-    "requirments": {
+    "requirements": {
       "power": 5,
       "time": "midday"
     },
