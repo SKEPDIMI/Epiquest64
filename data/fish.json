@@ -1,0 +1,74 @@
+{
+  "0": {
+    "obj_id": "0",
+    "obj_type": "junk",
+    "name": "Tin can",
+    "rarity": -1,
+    "description": "Junk item",
+    "requirments": null,
+    "price": null
+  },
+  "1": {
+    "obj_id": "1",
+    "obj_type": "fish",
+    "name": "Gold fish",
+    "rarity": 0,
+    "description": "A normal gold fish",
+    "requirements":  {
+      "time": "morning midday afternoon"
+    },
+    "price": 20
+  },
+  "2": {
+    "obj_id": "2",
+    "obj_type": "fish",
+    "name": "Dark Fish",
+    "rarity": 1,
+    "description": "",
+    "requirments": {
+      "time": "night midnight"
+    },
+    "price": 50
+  },
+  "3": {
+    "obj_id": "3",
+    "obj_type": "fish",
+    "name": "Guaba fish",
+    "rarity": 2,
+    "description": "What an ugly fish",
+    "requirments": {
+      "time": "midnight",
+      "power": 2
+    },
+    "price": 100
+  },
+  "4": {
+    "obj_id": "4",
+    "obj_type": "junk",
+    "name": "boot",
+    "rarity": 3,
+    "description": "An old boot. Great",
+    "requirments": null,
+    "price": 5
+  },
+  "5": {
+    "obj_id": "5",
+    "obj_type": "fish",
+    "name": "boot",
+    "rarity": 4,
+    "description": "An old boot. Great",
+    "requirments": null,
+    "price": null
+  },
+  "6": {
+    "obj_id": "6",
+    "obj_type": "fish",
+    "name": "Dragon fish",
+    "rarity": 5,
+    "description": "An old boot. Great",
+    "requirments": {
+      "power": 5
+    },
+    "price": 10000
+  }
+}
