@@ -40,4 +40,7 @@ module Controller
       return 'night'
     end
   end
+  def addToInventory(item)
+    @data['user'].inventory << item
+  end
 end
