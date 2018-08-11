@@ -71,6 +71,7 @@ module Map
       '_CITY' => City.new(controller),
         '_CITY_MARKET' => CityMarket.new(controller),
       '_BEACH' => Beach.new(controller),
+        '_BEACH_FISH' => BeachFish.new(controller),
       '_FINISH' => Finish.new(controller)
     }
   end
