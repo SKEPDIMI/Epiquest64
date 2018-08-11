@@ -1,3 +1,5 @@
+require 'whirly'
+
 require_relative 'engine'
 require_relative 'map'
 require_relative 'controller'
