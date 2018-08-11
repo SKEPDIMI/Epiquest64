@@ -5,10 +5,10 @@ class FishingRod
 end
 
 module User
-  def initialize(name = 'adventurer')
+  def initialize(controller, name = 'adventurer')
     @name = name
     @gold = 0
-    @fishing_rod = FishingRod.new
+    @fishing_rod = FishingRod.new(controller)
     @inventory = []
     @experience = 0
     @level = 0

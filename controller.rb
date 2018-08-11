@@ -1,14 +1,19 @@
+require_relative 'util/data_controller'
+
+class DataController
+  include DataController_model
+end
+
 module Controller
   def initialize(game_data)
-    @data = game_data
-    puts "CONTROLLER_DATA: "
-    puts @data['time']
+    @game_data = game_data
+    @data_controller = DataController.new
   end
   def get(prop)
-    return @data[prop]
+    return @game_data[prop]
   end
   def set(prop, value)
-    @data[prop] = value
+    @game_data[prop] = value
   end
   def addTime(seconds = 0) # Changes from real life seconds to game hours / days
     # 8.64 seconds in a day
@@ -22,11 +27,11 @@ module Controller
     game_seconds = (seconds * game_time_factor) # Game seconds are %70 faster
     days_passed = (game_seconds * seconds_in_game_day).floor
 
-    @data['time'] += game_seconds % seconds_in_game_day
-    @data['days'] = (@data['time'] / 24).floor
+    @game_data['time'] += game_seconds % seconds_in_game_day
+    @game_data['days'] = (@game_data['time'] / 24).floor
   end
   def timeOfDay
-    time = @data['time']
+    time = @game_data['time']
     case
     when time >= 23 && time <= 1 # 10PM - 1AM
       return 'midnight'
@@ -41,6 +46,15 @@ module Controller
     end
   end
   def addToInventory(item)
-    @data['user'].inventory << item
+    @game_data['user'].inventory << item
+  end
+  def data_findOne(q)
+    return @data_controller.findOne(q)
+  end
+  def data_findById(id)
+    return @data_controller.findById(id)
+  end
+  def data_find(q)
+    return @data_controller.find(q)
   end
 end

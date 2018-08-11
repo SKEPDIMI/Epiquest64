@@ -1,4 +1,3 @@
-require 'json'
 require_relative '../util/func'
 
 class Func
@@ -6,14 +5,12 @@ class Func
 end
 
 module FishingRod_model
-  def initialize
+  def initialize(controller)
+    @controller = controller
     @func = Func.new
     @health = 10
     @power = 5
     @bait = nil
-    
-    fish_data = File.read(__dir__ + '/../data/fish.json')
-    @fish_record = JSON.parse(fish_data)
   end
 
   def launch(time)
@@ -26,9 +23,10 @@ module FishingRod_model
     # Fish have a rarity level from -1 to 5
     # They also have requirment like time or power
 
+    fish_record = @controller.data_find('type', 'fish');
     x = @func.generate_luck()
     
-    available = @fish_record.delete_if { |key, value| value['rarity'] > x } # Only fish with a rarity less / equal to our luck
+    available = fish_record.delete_if { |key, value| value['rarity'] > x } # Only fish with a rarity less / equal to our luck
 
     choices = available.delete_if do |key, value| # Will filter out our choice based off requirments
       requirements = value['requirment']

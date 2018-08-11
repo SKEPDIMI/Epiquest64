@@ -1,0 +1,109 @@
+{
+  "a0": {
+    "type": "junk",
+    "name": "tin can",
+    "rarity": -1,
+    "description": "Junk item",
+    "requirments": null,
+    "price": null
+  },
+  "a1": {
+    "type": "fish",
+    "name": "gold fish",
+    "rarity": 0,
+    "description": "A normal gold fish",
+    "requirements":  {
+      "time": "morning midday afternoon"
+    },
+    "price": 20
+  },
+  "a2": {
+    "type": "fish",
+    "name": "Dark Fish",
+    "rarity": 1,
+    "description": "",
+    "requirments": {
+      "time": "night midnight"
+    },
+    "price": 50
+  },
+  "a3": {
+    "type": "fish",
+    "name": "Guaba fish",
+    "rarity": 2,
+    "description": "What an ugly fish",
+    "requirments": {
+      "time": "midnight",
+      "power": 2
+    },
+    "price": 100
+  },
+  "a4": {
+    "type": "junk",
+    "name": "boot",
+    "rarity": 3,
+    "description": "An old boot. Great",
+    "requirments": null,
+    "price": 5
+  },
+  "a5": {
+    "type": "_money",
+    "name": "sack of coins",
+    "rarity": 4,
+    "description": "A sack of coins! Kaching!",
+    "requirments": null,
+    "price": 2500
+  },
+  "a6": {
+    "type": "fish",
+    "name": "Dragon fish",
+    "rarity": 4,
+    "description": "A rare creature of the seas!",
+    "requirments": {
+      "power": 5
+    },
+    "price": 10000
+  },
+  "a7": {
+    "type": "fish",
+    "name": "Dark Dragon fish",
+    "rarity": 5,
+    "description": "A legendary fish indeed!",
+    "requirments": {
+      "power": 7,
+      "time": "midnight"
+    },
+    "price": 50000
+  },
+  "a8": {
+    "type": "fish",
+    "name": "Whale",
+    "rarity": 3,
+    "description": "A magnificent whale!",
+    "requirments": {
+      "power": 20
+    },
+    "price": 50000
+  },
+  "a9": {
+    "type": "fish",
+    "name": "Sea serpent",
+    "rarity": 5,
+    "description": "A slimy sea serpent!",
+    "requirments": {
+      "power": 2
+    },
+    "price": 50
+  },
+  "a10": {
+    "type": "fish",
+    "name": "Lion shark",
+    "rarity": 2,
+    "description": "A fierce lion shark from the deep!",
+    "requirments": {
+      "power": 5,
+      "time": "midday"
+    },
+    "price": 5000
+  }
+}

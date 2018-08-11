@@ -35,7 +35,7 @@ module Engine
     
     name = @console.prompt("What is your name, traveller?").capitalize
     
-    @controller.set('user', User_model.new(name));
+    @controller.set('user', User_model.new(@controller, name));
     user = @controller.get('user');
 
     @console.prompt("An honor to meet you, #{user.name}.\n# Let us begin our quest.\n> PRESS ENTER TO BEGIN");
