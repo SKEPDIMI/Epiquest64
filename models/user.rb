@@ -9,6 +9,7 @@ module User
     @name = name
     @gold = 0
     @fishing_rod = FishingRod.new
+    @inventory = []
     @experience = 0
     @level = 0
   end
