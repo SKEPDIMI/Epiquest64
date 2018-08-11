@@ -61,6 +61,13 @@ module Console
         puts x
       elsif stripped == '#exit'
         exit(0)
+      elsif stripped == "#inventory"
+        user = @controller.get('user')
+        if user == nil 
+          log "No user has been initialized"
+        else
+          puts @controller.getInventoryPopulated
+        end
       else
         log "Unknown command: #{stripped}"
       end

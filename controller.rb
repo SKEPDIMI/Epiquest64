@@ -49,8 +49,14 @@ module Controller
     if (item['type'] === '_money')
       @game_data['user'].money += item.price
     else
-      @game_data['user'].inventory << item
+      @game_data['user'].inventory << item['_id']
     end
+  end
+  def getInventoryPopulated
+    u_inventory = @game_data['user'].inventory
+    i_inventory = @data_controller.populate(u_inventory) # populated inventory
+
+    return i_inventory
   end
   def data_findOne(q)
     return @data_controller.findOne(q)

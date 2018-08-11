@@ -58,4 +58,14 @@ module DataController_model
 
     return results
   end
+
+  def populate(array)
+    populated_array = []
+    array.each do |id|
+      # find id that matches in @data and add it to p_array
+      populated_array << findById(id)
+    end
+
+    return p_array
+  end
 end
