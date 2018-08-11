@@ -39,9 +39,9 @@ module BeachFish_model
       response = @console.prompt("What do you do now?", ["Fish again", "Back to beach"])
 
       if response == 1
-        response '_BEACH_FISH'
+        return '_BEACH_FISH'
       elsif response == 2
-        response '_BEACH'
+        return '_BEACH'
       end
     end
   end
