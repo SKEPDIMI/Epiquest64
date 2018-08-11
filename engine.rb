@@ -44,7 +44,7 @@ module Engine
   end
 
   def gameLoop
-    current_location = @map.locations('_START')
+    current_location = @map.locations(ARGV.first || '_START')
     last_scene = @map.locations('_FINISH')
 
     # THIS IS THE MAIN GAME LOOP
