@@ -53,22 +53,68 @@
   },
   "5": {
     "obj_id": "5",
-    "obj_type": "fish",
-    "name": "boot",
+    "obj_type": "Sack of coins",
+    "name": "gold",
     "rarity": 4,
-    "description": "An old boot. Great",
+    "description": "A sack of coins! Kaching!",
     "requirments": null,
-    "price": null
+    "price": 1000
   },
   "6": {
     "obj_id": "6",
     "obj_type": "fish",
     "name": "Dragon fish",
-    "rarity": 5,
-    "description": "An old boot. Great",
+    "rarity": 4,
+    "description": "A rare creature of the seas!",
     "requirments": {
       "power": 5
     },
     "price": 10000
+  },
+  "7": {
+    "obj_id": "7",
+    "obj_type": "fish",
+    "name": "Dark Dragon fish",
+    "rarity": 5,
+    "description": "A legendary fish indeed!",
+    "requirments": {
+      "power": 7,
+      "time": "midnight"
+    },
+    "price": 50000
+  },
+  "8": {
+    "obj_id": "8",
+    "obj_type": "fish",
+    "name": "Whale",
+    "rarity": 3,
+    "description": "A magnificent whale!",
+    "requirments": {
+      "power": 20
+    },
+    "price": 50000
+  },
+  "9": {
+    "obj_id": "9",
+    "obj_type": "fish",
+    "name": "Sea serpent",
+    "rarity": 5,
+    "description": "A slimy sea serpent!",
+    "requirments": {
+      "power": 2
+    },
+    "price": 50
+  },
+  "10": {
+    "obj_id": "10",
+    "obj_type": "fish",
+    "name": "Lion shark",
+    "rarity": 2,
+    "description": "A fierce lion shark from the deep!",
+    "requirments": {
+      "power": 5,
+      "time": "midday"
+    },
+    "price": 5000
   }
 }
