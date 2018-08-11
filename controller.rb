@@ -46,7 +46,11 @@ module Controller
     end
   end
   def addToInventory(item)
-    @game_data['user'].inventory << item
+    if (item['type'] === '_money')
+      @game_data['user'].money += item.price
+    else
+      @game_data['user'].inventory << item
+    end
   end
   def data_findOne(q)
     return @data_controller.findOne(q)

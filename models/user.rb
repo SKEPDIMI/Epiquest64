@@ -7,7 +7,7 @@ end
 module User
   def initialize(controller, name = 'adventurer')
     @name = name
-    @gold = 0
+    @money = 0
     @fishing_rod = FishingRod.new(controller)
     @inventory = []
     @experience = 0
@@ -18,5 +18,5 @@ module User
     @name.capitalize
   end
 
-  attr_accessor :name, :gold, :fishing_rod, :experience, :level, :inventory
+  attr_accessor :name, :money, :fishing_rod, :experience, :level, :inventory
 end
