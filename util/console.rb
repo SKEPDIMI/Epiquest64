@@ -1,5 +1,12 @@
+require_relative 'func'
+
+class Func
+  include Func_model
+end
+
 module Console
   def initialize(controller)
+    @func = Func.new
     @controller = controller
     @start_time = false
   end
@@ -49,6 +56,9 @@ module Console
             log "Set time to #{time}"
           end
         end
+      elsif stripped == '#gen_luck'
+        x = @func.generate_luck
+        puts x
       elsif stripped == '#exit'
         exit(0)
       else

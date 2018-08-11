@@ -1,4 +1,4 @@
-require_relative 'console'
+require_relative 'util/console'
 require_relative 'locations/start'
 require_relative 'locations/city'
 require_relative 'locations/beach'

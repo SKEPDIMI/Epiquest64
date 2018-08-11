@@ -1,7 +1,13 @@
 require 'json'
+require_relative '../util/func'
+
+class Func
+  include Func_model
+end
 
 module FishingRod_model
   def initialize
+    @func = Func.new
     @health = 10
     @power = 5
     @bait = nil
@@ -20,8 +26,8 @@ module FishingRod_model
     # Fish have a rarity level from -1 to 5
     # They also have requirment like time or power
 
-    x = rand(-1..5) # This needs to return lower numbers more commonly
-
+    x = @func.generate_luck()
+    
     available = @fish_record.delete_if { |key, value| value['rarity'] != x }
 
     puts "x: #{x}"

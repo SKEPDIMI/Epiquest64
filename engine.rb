@@ -1,5 +1,5 @@
 require_relative 'models/user'
-require_relative 'console'
+require_relative 'util/console'
 
 class User_model
   include User
