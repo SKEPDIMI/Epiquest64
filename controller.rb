@@ -58,6 +58,9 @@ module Controller
 
     return i_inventory
   end
+  def addMoney(m)
+    @game_data['user'].money += m
+  end
   def data_findOne(q)
     return @data_controller.findOne(q)
   end

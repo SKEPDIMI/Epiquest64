@@ -55,3 +55,84 @@ module BeachFish_model
     return '_BEACH_FISH'
   end
 end
+
+module BeachDocks_model
+  def enter
+    timeOfDay = @controller.timeOfDay;
+
+    user = @controller.get('user');
+    puts "You arrive at the docks"
+
+    if timeOfDay.include? "night"
+      @console.prompt "The docks are closed at this time. Come back in the morning"
+      return "_BEACH"
+    else
+      response = @console.prompt("Where do you want do go?", [
+        "Deep sea fishing (5 silver, 3 hours)",
+        "Tamarin island (27 copper)",
+        "Miradona (10 gold)"
+      ]);
+
+      if response == 1
+        if user.money < 500
+          @console.prompt "You dont have enough money (#{user.money/100} / 5 silver)"
+          return "_BEACH_DOCKS"
+        else
+          @controller.addMoney(-500)
+          return travelling_display('_BEACH_DEEPSEA', 'the deep sea', 1)
+        end
+      elsif response == 2
+        if user.money < 27
+          @console.prompt "You dont have enough money (#{user.money} / 27 copper)"
+          return "_BEACH_DOCKS"
+        else
+          @controller.addMoney(-27)
+          return travelling_display('_TAMARINISLAND', 'Tamarin island', 2)
+        end
+      elsif response == 3
+        if user.money < 10000
+          @console.prompt "You dont have enough money (#{user.money / 10000} / 10 gold)"
+          return "_BEACH_DOCKS"
+        else
+          @controller.addMoney(-10000)
+          return travelling_display('_MIRADONA', 'Miradona', 5)
+        end
+      end
+    end
+  end
+  def travelling_display(id, name, days)
+    console.clearScreen()
+    
+    Whirly.start spinner: "clock" do
+      Whirly.status = "Mounting boat.."
+      sleep 5
+      Whirly.status = "Waiting for line.."
+      sleep 7
+      Whirly.status = "Leaving dock!"
+      sleep 8
+    end
+
+    i = 0
+    while i < days
+      @console.clearScreen()
+      if i % 2 == 0
+        Whirly.start spinner: "earth" do
+          Whirly.status = "Travelling to #{name}.."
+          sleep 10
+        end
+      else
+        Whirly.start spinner: "moon" do
+          Whirly.status = "Travelling to #{name}.."
+          sleep 10
+        end
+      end
+
+      i+=1
+    end
+
+    return id
+  end
+  def id
+    return '_BEACH_DOCKS'
+  end
+end

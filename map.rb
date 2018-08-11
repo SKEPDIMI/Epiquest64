@@ -47,6 +47,10 @@ class BeachFish < Location
   include BeachFish_model
 end
 
+class BeachDocks < Location
+  include BeachDocks_model
+end
+
 class Finish < Location
   def enter()
     @console.display("Game ends here")
@@ -72,6 +76,7 @@ module Map
         '_CITY_MARKET' => CityMarket.new(controller),
       '_BEACH' => Beach.new(controller),
         '_BEACH_FISH' => BeachFish.new(controller),
+        '_BEACH_DOCKS' => BeachDocks.new(controller),
       '_FINISH' => Finish.new(controller)
     }
   end
