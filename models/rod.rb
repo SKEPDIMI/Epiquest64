@@ -28,11 +28,9 @@ module FishingRod_model
 
     x = @func.generate_luck()
     
-    available = @fish_record.delete_if { |key, value| value['rarity'] != x }
+    available = @fish_record.delete_if { |key, value| value['rarity'] > x } # Only fish with a rarity less / equal to our luck
 
-    puts "x: #{x}"
-    puts "available: #{available}"
-    choices = available.delete_if do |key, value| # Will filter out our choice based off of luck and requirments
+    choices = available.delete_if do |key, value| # Will filter out our choice based off requirments
       requirements = value['requirment']
 
       if requirements # If fish has requirments to catch
@@ -49,10 +47,10 @@ module FishingRod_model
         end
       end
     end
+
+    values = choices.values
+    selected = values[rand(values.size)]
     
-    puts "CHOICES: #{choices}"
-    selected = choices[rand(choices.size)] 
-    puts "sle: #{selected}"
     return selected
   end
 
