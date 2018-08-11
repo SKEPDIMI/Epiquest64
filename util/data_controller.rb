@@ -9,6 +9,7 @@ module DataController_model
   def findById(id)
     @data.each do |key, value|
       if key === id
+        value['_id'] = id
         return value
       end
     end
@@ -28,6 +29,7 @@ module DataController_model
         end
       end
       if match
+        data['_id'] = id
         return data
       end
     end
@@ -49,6 +51,7 @@ module DataController_model
         end
       end
       if match
+        data['_id'] = id
         results[id] = data
       end
     end
