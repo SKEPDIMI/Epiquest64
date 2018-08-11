@@ -35,8 +35,6 @@ module FishingRod_model
       requirements = value['requirements']
 
       if requirements # If fish has requirements to catch
-        @console.log("HAS REQS")
-        @console.log("#{value['name']} has requirement")
         if requirements['time'] # If time is a requirement
           if !requirements['time'].include?(timeOfDay) # If we dont have this requirement, delete fish
             available.delete(key)
