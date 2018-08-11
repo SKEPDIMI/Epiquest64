@@ -3,11 +3,6 @@ module Start_model
     timeOfDay = @controller.timeOfDay
     day = @controller.get('day')
 
-    #TESTING
-    user = @controller.get('user')
-    fishing_rod = user.fishing_rod
-    fishing_rod.launch @controller.get('time')
-
     if timeOfDay == 'morning' && day == 0
       puts "You feel the soft breeze easing through your face"
       puts "As you begin to open your eyes, rays of sunlight overwhelm you"
