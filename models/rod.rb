@@ -1,4 +1,9 @@
 require_relative '../util/func'
+require_relative '../util/console'
+
+class Console_model
+  include Console
+end
 
 class Func
   include Func_model
@@ -6,6 +11,7 @@ end
 
 module FishingRod_model
   def initialize(controller)
+    @console = Console_model.new(controller)
     @controller = controller
     @func = Func.new
     @health = 10
@@ -13,42 +19,51 @@ module FishingRod_model
     @bait = nil
   end
 
-  def launch(time)
-    if @health <= 0
-      puts "Your rod is broken"
-      return nil
-    end
+  def launch()
 
     # Here we look for a random fish
     # Fish have a rarity level from -1 to 5
-    # They also have requirment like time or power
+    # They also have requirement like time or power
 
-    fish_record = @controller.data_find('type', 'fish');
+    timeOfDay = @controller.timeOfDay
+    fish_record = @controller.data_find({'type' => 'fish'});
     x = @func.generate_luck()
     
     available = fish_record.delete_if { |key, value| value['rarity'] > x } # Only fish with a rarity less / equal to our luck
 
-    choices = available.delete_if do |key, value| # Will filter out our choice based off requirments
-      requirements = value['requirment']
+    available.each do |key, value| # Will filter out our choice based off requirements
+      requirements = value['requirements']
 
-      if requirements # If fish has requirments to catch
-        puts "#{value['name']} has requirment"
-        if requirment['time'] # If time is a requirment
-          if !requirements['time'].include?(time) # If we dont have this requirment, delete fish
-            return true
+      if requirements # If fish has requirements to catch
+        @console.log("HAS REQS")
+        @console.log("#{value['name']} has requirement")
+        if requirements['time'] # If time is a requirement
+          if !requirements['time'].include?(timeOfDay) # If we dont have this requirement, delete fish
+            available.delete(key)
           end
         end
-        if requirements['power'] # If power is a requirment
-          if value['power'] > @power
-            return true
+        if requirements['power'] # If power is a requirement
+          if requirements['power'] > @power # if fish has more power than rod
+            available.delete(key)
           end # If we dont have enough power, delete fish
         end
       end
     end
 
-    values = choices.values
+    values = available.values
     selected = values[rand(values.size)]
     
+    Whirly.start spinner: "clock" do
+      Whirly.status = "Adding bait.."
+      sleep 3
+      Whirly.status = "Throwing line.."
+      sleep 3
+      Whirly.status = "Patiently waiting.."
+      sleep 6
+      Whirly.status = "Pulling line.."
+      sleep 4
+    end
+
     return selected
   end
 
