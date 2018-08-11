@@ -18,5 +18,5 @@ module User
     @name.capitalize
   end
 
-  attr_accessor :name, :gold, :fishing_rod, :experience, :level
+  attr_accessor :name, :gold, :fishing_rod, :experience, :level, :inventory
 end
