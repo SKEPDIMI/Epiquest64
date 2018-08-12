@@ -31,7 +31,11 @@ module CityMarket_model
       return '_CITY'
     else
       puts "The city market, packed as always."
-      response = @controller.at('console').prompt("What do you do now?", ["Visit fishing shop", "Leave back to city entrance"])
+      response = @controller.at('console').prompt("What do you do now?", [
+        "Visit fish market",
+        "Leave back to city entrance"
+      ]);
+
       if response == 1
         return '_CITY_MARKET_FISH_SHOP'
       elsif response == 2
@@ -74,7 +78,6 @@ module CityMarketFishingShop_model
     puts "You enter Snapper's fishing store"
     
     @npc_snapper.greet
-    
     @npc_snapper.business
 
     response = @controller.at('console').prompt('What would you like to do now?', [

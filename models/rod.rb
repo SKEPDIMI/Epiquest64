@@ -20,10 +20,13 @@ module FishingRod_model
     # They also have requirement like time or power
 
     timeOfDay = @controller.timeOfDay
-    fish_record = @controller.data_find({'type' => 'fish'});
+    fish_record = @controller.data_find('fishing_loot');
+
     x = @func.generate_luck()
     
     available = fish_record.delete_if { |key, value| value['rarity'] > x } # Only fish with a rarity less / equal to our luck
+
+    fish_record = @controller.data_find('fishing_loot');
 
     available.each do |key, value| # Will filter out our choice based off requirements
       requirements = value['requirements']

@@ -10,8 +10,8 @@ module User
     @money = 0
     @fishing_rod = FishingRod.new(controller)
     @inventory = [ # FOR TESTING ONLY. THIS SHOULD BE EMPTY
-      "a8",
-      "a5"
+      {'_ref' => 'fishing_loot', '_id' => "a8"},
+      {'_ref' => 'fishing_loot', '_id' => "a5"}
     ]
     @xp = 0
     @level = 0

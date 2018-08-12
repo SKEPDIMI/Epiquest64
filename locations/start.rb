@@ -15,25 +15,28 @@ module Start_model
        And then you see it, standing as tall as ever, The greatest city to have ever been built
        THE KINGDOM OF EPIQUORIA - 700 B.C.
       """
-    else day == 1
-      puts "You lie under the same shade without a care in the world, free of the worries of the world"
+    else
+      @controller.at('console').display "You lie under the same shade without a care in the world, free of the worries of the world"
     end
 
-    response = @controller.at('console').prompt("What would you like to do now?", ["Sleep some more", "Head to the city"]);
+    response = @controller.at('console').prompt("What would you like to do now?", [
+      "Sleep some more",
+      "Head to the city"
+    ]);
 
     if response == 1
       case
       when timeOfDay == 'morning' || timeOfDay == 'midday'
-        @controller.at('console').prompt("You close your eyes and head back to sleep again...")
+        @controller.at('console').display("You close your eyes and head back to sleep again...")
         @controller.addTime(14400) #4 hours
       when timeOfDay == 'afternoon'
-        @controller.at('console').prompt("Seeing it's getting late you head back to sleep again...")
+        @controller.at('console').display("Seeing it's getting late you head back to sleep again...")
         @controller.addTime(7200) #2 hours
       when timeOfDay == 'evening'
-        @controller.at('console').prompt("It's getting dark, but you still head back to sleep")
+        @controller.at('console').display("It's getting dark, but you still head back to sleep")
         @controller.addTime(3600) #1 hour
-      when timeOfDay == 'night'
-        @controller.at('console').prompt("Seeing its dark you still head back to sleep")
+      when timeOfDay.include?('night')
+        @controller.at('console').display("Seeing its dark you still head back to sleep")
         @controller.addTime(1800) #30 min
       end
       return '_START'

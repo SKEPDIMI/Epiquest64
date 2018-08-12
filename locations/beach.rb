@@ -39,7 +39,8 @@ module BeachFish_model
         response = @controller.at('console').prompt("Keep item?", ["Yes", "No"])
         if response == 1
           @controller.addToInventory(result)
-          puts "Added #{result['name']} to inventory!"
+          
+          @controller.at('console').display("Added #{result['name']} to inventory!")
         end
       end
       response = @controller.at('console').prompt("What do you do now?", ["Fish again", "Back to beach"])

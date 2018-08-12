@@ -26,11 +26,10 @@ module Console_model
 
     print "\nresponse > "
     response = $stdin.gets.chomp.downcase
-
     if response[0] === '#' # This will detect commands from the user
       stripped = response.gsub(/\s+/, "")
       if (stripped === '#time')
-        display "Time is #{@controller.timeOfDay} (#{@controller.getData('time')})"
+        display "Time is #{@controller.timeOfDay} (#{@controller.getData('time')} on day #{@controller.getData('day')})"
       elsif (stripped == "#get")
         # Find arguments and return data
         user = @controller.getData('user')
@@ -71,10 +70,10 @@ module Console_model
     
       finish_time()
       return get_input()
-    else
-      finish_time()
-      return response
     end
+
+    finish_time()
+    return response
   end
 
   def clearScreen
@@ -100,19 +99,24 @@ module Console_model
   end
   
   def prompt(message, options = false, format = false)
-    clearScreen()
-    print_format("\n# #{message}\n", 'red')
-
     if options # Make sure the user's option is valid
-      options.each do |option| # timeall of the options for the user
-        puts "* #{option}"
-      end
+      while true
+        clearScreen()
+        print_format("\n# #{message}\n", 'red')
+        options.each do |option| # timeall of the options for the user
+          puts "* #{option}"
+        end
+        response = get_input()
   
-      response = get_input()
-  
-      options.each_with_index do |option, i|
-        if option.downcase.include? response
-          return i+1 # Return the index+1 of the selected option
+        if response.gsub(/\s+/, "") == ""
+          display "> Empty response"
+          next
+        end
+    
+        options.each_with_index do |option, i|
+          if option.downcase.include? response
+            return i+1 # Return the index+1 of the selected option
+          end
         end
       end
   
@@ -121,7 +125,18 @@ module Console_model
       print_format("I'm not sure what that means", 'italic')
       prompt(message, options)
     else
-      return get_input()
+      while true
+        clearScreen()
+        print_format("\n# #{message}\n", 'red')
+        response = get_input()
+
+        if response.gsub(/\s+/, "") == ""
+          display "> Empty response"
+          next
+        end
+
+        return response
+      end
     end
   end
 
@@ -134,18 +149,18 @@ module Console_model
     if user == nil 
       log "No user has been initialized"
     else
-      clearScreen()
       user = @controller.getData('user')
       inventory = @controller.getInventoryPopulated
       if inventory.length == 0
-        puts "*-= INVENTORY IS EMPTY =-*"
+        puts "*-= INVENTORY IS EMPTY 0/50 =-*"
         return false
       else
-        puts "*-= INVENTORY #{inventory.length}/50 =-*\n|"
+        display_text = "*-= INVENTORY #{inventory.length}/50 =-*\n"
         inventory.each_with_index do |item, i|
           price = @func.toReadableMoney(item['price'])
-          puts "|#{i + 1}| [#{item['name']}] | \"#{item['description']} \" | price: #{price}"
+          display_text += "|#{i + 1}| [#{item['name']}] | \"#{item['description']} \" | price: #{price} |\n"
         end
+        display(display_text)
         return inventory
       end
     end
@@ -158,8 +173,12 @@ module Console_model
         return false
       else
         puts "-- SELECT AN ITEM --"
-        puts "-- DO #cancel TO EXIT --"
-        response = (get_input()).to_i
+        puts "-- DO !cancel TO EXIT --"
+        response = get_input()
+        if response == "!cancel"
+          return false
+        end
+        response = response.to_i
         chosen = inventory[response-1]
         if response === 0 || !chosen
           display "Item at this index does not exist"
@@ -182,8 +201,12 @@ module Console_model
         return false
       else
         puts "-- DELETE AN ITEM --"
-        puts "-- DO #cancel TO EXIT --"
-        response = (get_input()).to_i
+        puts "-- DO !cancel TO EXIT --"
+        response = get_input()
+        if response == "!cancel"
+          return false
+        end
+        response = response.to_i
         chosen = inventory[response-1]
         if response === 0 || !chosen
           display("Item at this index does not exist")

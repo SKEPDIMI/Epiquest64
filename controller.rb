@@ -58,7 +58,7 @@ module Controller
     else
       inventory = @game_data['user'].inventory
       if inventory.length < 50
-        @game_data['user'].inventory << item['_id']
+        @game_data['user'].inventory << {'_ref' => item['_ref'], '_id' => item['_id']}
       else
         response = @connected['console'].prompt("YOUR INVENTORY IS FULL! Would you like to make space or discard item?", [
           'Yes',
@@ -68,7 +68,7 @@ module Controller
           deleted = @connected['console'].deleteFromInventory
 
           if deleted
-            @game_data['user'].inventory << item['_id']
+            @game_data['user'].inventory << {'_ref' => item['_ref'], '_id' => item['_id']}
             @connected['console'].display("Saved item in inventory!")
           end
         end
@@ -76,7 +76,7 @@ module Controller
     end
   end
   def getInventoryPopulated
-    u_inventory = @game_data['user'].inventory
+    u_inventory = (@game_data['user'].inventory).dup
     i_inventory = @data_controller.populate(u_inventory) # populated inventory
 
     return i_inventory
@@ -88,19 +88,19 @@ module Controller
     _inventory = @game_data['user'].inventory
 
     _inventory.each_with_index do |x, i|
-      if x === item['_id']
+      if x['_id'] === item['_id']
         _inventory.delete_at(i)
         break
       end
     end
   end
-  def data_findOne(q)
-    return @data_controller.findOne(q)
+  def data_findOne(collection, q = {})
+    return @data_controller.findOne(collection, q)
   end
-  def data_findById(id)
-    return @data_controller.findById(id)
+  def data_findById(collection, id)
+    return @data_controller.findById(collection, id)
   end
-  def data_find(q)
-    return @data_controller.find(q)
+  def data_find(collection, q = {})
+    return @data_controller.find(collection, q)
   end
 end

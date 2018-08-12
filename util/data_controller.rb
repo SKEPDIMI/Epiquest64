@@ -2,14 +2,20 @@ require 'json'
 
 module DataController_model
   def initialize
-    data = File.read(__dir__ + '/../data/data.json')
-    @data = JSON.parse(data)
+    @data = {} # This should not be changed after it has been initialized
+    Dir[__dir__ + '/../data/*.json'].each do |filepath| # Turns @data into hash of collections based off the data directory
+      filename = File.basename(filepath, ".json")
+      file = open(filepath)
+      @data[filename] = JSON.parse(file.read)
+      @data[filename].freeze() # is immutable
+    end
   end
 
-  def findById(id)
-    @data.each do |key, value|
+  def findById(collection, id)
+    data = @data[collection].dup
+
+    data.each do |key, value|
       if key === id
-        value['_id'] = id
         return value
       end
     end
@@ -17,8 +23,17 @@ module DataController_model
     return {}
   end
 
-  def findOne(q)
-    @data.each do |id, data|
+  def findOne(collection, q = {})
+    data = @data[collection].dup
+    if q == {}
+      data.each do |key, value|
+        value['_ref'] = collection
+        value['_id'] = key
+      end
+      return data
+    end
+
+    data.each do |id, data|
       match = false
       q.keys.each do |key| # For each key in query
         if data[key] == q[key] # If the query[key] is == to the data[key]
@@ -29,6 +44,7 @@ module DataController_model
         end
       end
       if match
+        data['_ref'] = collection
         data['_id'] = id
         return data
       end
@@ -37,10 +53,19 @@ module DataController_model
     return {}
   end
 
-  def find(q)
+  def find(collection, q = {})
+    data = @data[collection].dup
+
+    if q == {}
+      data.each do |key, value|
+        value['_ref'] = collection
+        value['_id'] = key
+      end
+      return data
+    end
     results = {}
 
-    @data.each do |id, data|
+    data[collection].each do |id, data|
       match = false
       q.keys.each do |key| # For each key in query
         if data[key] == q[key] # If the query[key] is == to the data[key]
@@ -52,6 +77,7 @@ module DataController_model
       end
       if match
         data['_id'] = id
+        data['_ref'] = collection
         results[id] = data
       end
     end
@@ -61,9 +87,11 @@ module DataController_model
 
   def populate(array)
     populated_array = []
-    array.each do |id|
+    array.each do |item|
       # find id that matches in @data and add it to p_array
-      populated_array << findById(id)
+
+      p_item = findById(item['_ref'], item['_id'])
+      populated_array << p_item
     end
 
     return populated_array
