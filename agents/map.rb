@@ -1,6 +1,6 @@
-require_relative 'locations/start'
-require_relative 'locations/city'
-require_relative 'locations/beach'
+require_relative '../locations/start'
+require_relative '../locations/city'
+require_relative '../locations/beach'
 
 class Location
   ## LOCATION CLASS

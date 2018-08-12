@@ -1,4 +1,4 @@
-require_relative 'func'
+require_relative '../util/func'
 
 class Func
   include Func_model

@@ -1,8 +1,13 @@
 require_relative 'models/user'
-require_relative 'util/console'
+require_relative 'agents/console'
+require_relative 'agents/map'
 
 class User_model
   include User
+end
+
+class Game_Map
+  include Map
 end
 
 class Console_model

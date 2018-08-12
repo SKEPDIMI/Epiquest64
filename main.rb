@@ -1,12 +1,8 @@
 require 'whirly'
 
 require_relative 'engine'
-require_relative 'map'
 require_relative 'controller'
 
-class Game_Map
-  include Map
-end
 class Game_Engine
   include Engine
 end
