@@ -9,8 +9,11 @@ module User
     @name = name
     @money = 0
     @fishing_rod = FishingRod.new(controller)
-    @inventory = []
-    @experience = 0
+    @inventory = [ # FOR TESTING ONLY. THIS SHOULD BE EMPTY
+      "a8",
+      "a5"
+    ]
+    @xp = 0
     @level = 0
   end
 
@@ -18,5 +21,5 @@ module User
     @name.capitalize
   end
 
-  attr_accessor :name, :money, :fishing_rod, :experience, :level, :inventory
+  attr_accessor :name, :money, :fishing_rod, :xp, :level, :inventory
 end

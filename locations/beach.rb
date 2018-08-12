@@ -33,9 +33,9 @@ module BeachFish_model
       @controller.at('console').clearScreen()
 
       if !result
-        @controller.at('console').prompt "Tough luck.. You didnt catch anything!"
+        @controller.at('console').display "Tough luck.. You didnt catch anything!"
       elsif result
-        @controller.at('console').prompt "You caught a #{result['name']}! #{result['description']}"
+        @controller.at('console').display "You caught a #{result['name']}! #{result['description']}"
         response = @controller.at('console').prompt("Keep item?", ["Yes", "No"])
         if response == 1
           @controller.addToInventory(result)
@@ -64,18 +64,19 @@ module BeachDocks_model
     puts "You arrive at the docks"
 
     if timeOfDay.include? "night"
-      @controller.at('console').prompt "The docks are closed at this time. Come back in the morning"
+      @controller.at('console').display "The docks are closed at this time. Come back in the morning"
       return "_BEACH"
     else
       response = @controller.at('console').prompt("Where do you want do go?", [
         "Deep sea fishing (5 silver, 3 hours)",
         "Tamarin island (27 copper)",
-        "Miradona (10 gold)"
+        "Miradona (10 gold)",
+        "Back to beach"
       ]);
 
       if response == 1
         if user.money < 500
-          @controller.at('console').prompt "You dont have enough money (#{user.money/100} / 5 silver)"
+          @controller.at('console').display "You dont have enough money (#{user.money/100} / 5 silver)"
           return "_BEACH_DOCKS"
         else
           @controller.addMoney(-500)
@@ -83,7 +84,7 @@ module BeachDocks_model
         end
       elsif response == 2
         if user.money < 27
-          @controller.at('console').prompt "You dont have enough money (#{user.money} / 27 copper)"
+          @controller.at('console').display "You dont have enough money (#{user.money} / 27 copper)"
           return "_BEACH_DOCKS"
         else
           @controller.addMoney(-27)
@@ -91,17 +92,19 @@ module BeachDocks_model
         end
       elsif response == 3
         if user.money < 10000
-          @controller.at('console').prompt "You dont have enough money (#{user.money / 10000} / 10 gold)"
+          @controller.at('console').display "You dont have enough money (#{user.money / 10000} / 10 gold)"
           return "_BEACH_DOCKS"
         else
           @controller.addMoney(-10000)
-          return travelling_display('_MIRADONA', 'Miradona', 5)
+          return travelling_display('_MIRADONA', 'Miradona', (rand(5..6)).round)
         end
+      elsif response == 4
+        return '_BEACH'
       end
     end
   end
   def travelling_display(id, name, days)
-    console.clearScreen()
+    @controller.at('console').clearScreen()
 
     Whirly.start spinner: "clock" do
       Whirly.status = "Mounting boat.."

@@ -30,7 +30,7 @@ module Engine
     # @npcs = NPCs.new(controller)
   end
   def play
-    @controller.at('console').prompt """
+    @controller.at('console').display """
        _____  _____   _____  _____  _   _  _____  _____  _____             ____    ___ 
       |  ___|| ___ \\|_   _||  _  || | | ||  ___|/  ___||_   _|           / ___|  /   |
       | |__  | |_/ /  | |  | | | || | | || |__  \\ `--.   | |    ______  / /___  / /| |
@@ -52,7 +52,7 @@ module Engine
     @controller.setData('user', User_model.new(@controller, name));
     user = @controller.getData('user');
 
-    @controller.at('console').prompt("An honor to meet you, #{user.name}.\n# Let us begin our quest.\n> PRESS ENTER TO BEGIN");
+    @controller.at('console').display("An honor to meet you, #{user.name}.\n# Let us begin our quest.\n> PRESS ENTER TO BEGIN");
 
     gameLoop()
   end
@@ -63,10 +63,9 @@ module Engine
 
     # THIS IS THE MAIN GAME LOOP
     while current_location != last_scene
+      @controller.at('console').clearScreen()
       next_location_id = current_location.enter() || '_FINISH' # Enter the current location, which will return the next scene's ID WHEN the player finishes the given scene
       current_location = @controller.at('map').locations(next_location_id) # Current location is now the location that goes after the completed location
-      
-      @controller.at('console').clearScreen()
     end
 
     current_location.enter()

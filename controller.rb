@@ -56,7 +56,23 @@ module Controller
     if (item['type'] === '_money')
       @game_data['user'].money += item.price
     else
-      @game_data['user'].inventory << item['_id']
+      inventory = @game_data['user'].inventory
+      if inventory.length < 50
+        @game_data['user'].inventory << item['_id']
+      else
+        response = @connected['console'].prompt("YOUR INVENTORY IS FULL! Would you like to make space or discard item?", [
+          'Yes',
+          'No'
+        ])
+        if response == 1
+          deleted = @connected['console'].deleteFromInventory
+
+          if deleted
+            @game_data['user'].inventory << item['_id']
+            @connected['console'].display("Saved item in inventory!")
+          end
+        end
+      end
     end
   end
   def getInventoryPopulated
@@ -67,6 +83,16 @@ module Controller
   end
   def addMoney(m)
     @game_data['user'].money += m
+  end
+  def deleteOneFromInventory(item)
+    _inventory = @game_data['user'].inventory
+
+    _inventory.each_with_index do |x, i|
+      if x === item['_id']
+        _inventory.delete_at(i)
+        break
+      end
+    end
   end
   def data_findOne(q)
     return @data_controller.findOne(q)

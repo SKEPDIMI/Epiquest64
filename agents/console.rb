@@ -21,24 +21,26 @@ module Console_model
   end
   
   def get_input() # Gets input from the user, or checks and runs commands
-    @start_time ||= Time.now
-    print "> "
+    # Please dont use get_input()/prompt() inside get_input :)
+    @start_time = Time.now
+
+    print "\nresponse > "
     response = $stdin.gets.chomp.downcase
 
     if response[0] === '#' # This will detect commands from the user
       stripped = response.gsub(/\s+/, "")
       if (stripped === '#time')
-        log "Time is #{@controller.timeOfDay} (#{@controller.getData('time')})"
+        display "Time is #{@controller.timeOfDay} (#{@controller.getData('time')})"
       elsif (stripped == "#get")
         # Find arguments and return data
         user = @controller.getData('user')
         if user == nil 
-          log "No user has been initialized"
+          display "No user has been initialized"
         else
-          log """
+          display """
           NAME: #{user.name}
-          GOLD: #{user.gold}
-          FISHING_ROD_HEALTH: #{user.fishing_rod_health}
+          MONEY: #{@func.toReadableMoney(user.money)}
+          FISHING_ROD_HEALTH: #{user.fishing_rod.health}
           XP: #{user.xp}
           LEVEL: #{user.level}
           """
@@ -46,14 +48,14 @@ module Console_model
       elsif stripped[0..7] == '#settime'
         arg = stripped.gsub('#settime', '')
         if arg == ''
-          log "No argument provided"
+          display "No argument provided"
         else
           time = arg.to_i
           if time > 24 || time < 0
-            log "Time must be between 0 and 24"
+            display "Time must be between 0 and 24"
           else
             @controller.set('time', time)
-            log "Set time to #{time}"
+            display "Set time to #{time}"
           end
         end
       elsif stripped == '#gen_luck'
@@ -62,22 +64,17 @@ module Console_model
       elsif stripped == '#exit'
         exit(0)
       elsif stripped == "#inventory"
-        user = @controller.getData('user')
-        if user == nil 
-          log "No user has been initialized"
-        else
-          puts @controller.getInventoryPopulated
-        end
+        showInventory()
       else
-        log "Unknown command: #{stripped}"
+        display "Unknown command: #{stripped}"
       end
-      
+    
       finish_time()
       return get_input()
+    else
+      finish_time()
+      return response
     end
-
-    finish_time()
-    return response
   end
 
   def clearScreen
@@ -98,10 +95,12 @@ module Console_model
   end
   
   def display(message)
-    puts "# #{message}"
+    print_format("\n# #{message}\n", 'red')
+    $stdin.gets.chomp
   end
   
   def prompt(message, options = false, format = false)
+    clearScreen()
     print_format("\n# #{message}\n", 'red')
 
     if options # Make sure the user's option is valid
@@ -128,5 +127,76 @@ module Console_model
 
   def dialogue(name, message)
     puts "@#{name}: \"#{message}\""
+  end
+
+  def showInventory
+    user = @controller.getData('user')
+    if user == nil 
+      log "No user has been initialized"
+    else
+      clearScreen()
+      user = @controller.getData('user')
+      inventory = @controller.getInventoryPopulated
+      if inventory.length == 0
+        puts "*-= INVENTORY IS EMPTY =-*"
+        return false
+      else
+        puts "*-= INVENTORY #{inventory.length}/50 =-*\n|"
+        inventory.each_with_index do |item, i|
+          price = @func.toReadableMoney(item['price'])
+          puts "|#{i + 1}| [#{item['name']}] | \"#{item['description']} \" | price: #{price}"
+        end
+        return inventory
+      end
+    end
+  end
+  def getFromInventory
+    while true
+      inventory = showInventory()
+      if !inventory
+        display "NO ITEMS TO SELECT"
+        return false
+      else
+        puts "-- SELECT AN ITEM --"
+        puts "-- DO #cancel TO EXIT --"
+        response = (get_input()).to_i
+        chosen = inventory[response-1]
+        if response === 0 || !chosen
+          display "Item at this index does not exist"
+        else
+          clearScreen()
+          response = prompt("Chose #{chosen['name']}. Continue?", ["Yes", "No"]);
+
+          if response == 1
+            return chosen
+          end
+        end
+      end
+    end
+  end
+  def deleteFromInventory
+    while true
+      inventory = showInventory()
+      if !inventory
+        display "NO ITEMS TO SELECT"
+        return false
+      else
+        puts "-- DELETE AN ITEM --"
+        puts "-- DO #cancel TO EXIT --"
+        response = (get_input()).to_i
+        chosen = inventory[response-1]
+        if response === 0 || !chosen
+          display("Item at this index does not exist")
+        else
+          clearScreen()
+          response = prompt("Chose #{chosen['name']}. Continue?", ["Yes", "No"]);
+
+          if response == 1
+            @controller.deleteOneFromInventory(chosen)
+            return true
+          end
+        end
+      end
+    end
   end
 end

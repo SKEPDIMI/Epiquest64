@@ -4,15 +4,17 @@ module Start_model
     day = @controller.getData('day')
 
     if timeOfDay == 'morning' && day == 0
-      puts "You feel the soft breeze easing through your face"
-      puts "As you begin to open your eyes, rays of sunlight overwhelm you"
-      puts "It takes your eyes a second to adjust to the bright, sunny and light sky overhead you"
-      @controller.at('console').print_format("\nIt was all a dream after all.\n", 'italic')
-      puts "You lie under the shade of a tree, where you must haven falled asleep a long time ago"
-      puts "With your body now rejuvinated, you take a deep breath before sitting upright from your laying position"
-      puts "You are then met with a familiar landscape, of fields far beyond the eye can see, mountains raging in the far lands"
-      puts "And then you see it, standing as tall as ever, The greatest city to have ever been built"
-      puts "THE KINGDOM OF EPIQUORIA - 700 B.C."
+      @controller.at('console').display """
+       You feel the soft breeze easing through your face
+       As you begin to open your eyes, rays of sunlight overwhelm you
+       It takes your eyes a second to adjust to the bright, sunny and light sky overhead you
+        \nIt was all a dream after all.\n
+       You lie under the shade of a tree, where you must haven falled asleep a long time ago
+       With your body now rejuvinated, you take a deep breath before sitting upright from your laying position
+       You are then met with a familiar landscape, of fields far beyond the eye can see, mountains raging in the far lands
+       And then you see it, standing as tall as ever, The greatest city to have ever been built
+       THE KINGDOM OF EPIQUORIA - 700 B.C.
+      """
     else day == 1
       puts "You lie under the same shade without a care in the world, free of the worries of the world"
     end
@@ -37,7 +39,7 @@ module Start_model
       return '_START'
     elsif response == 2
       @controller.at('console').display('As you approach the walls of the city, you are greeted by guards at the entrance')
-      @controller.at('console').prompt('You enter through the gates of the city')
+      @controller.at('console').display('You enter through the gates of the city')
 
       return '_CITY'
     end

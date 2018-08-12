@@ -66,6 +66,6 @@ module DataController_model
       populated_array << findById(id)
     end
 
-    return p_array
+    return populated_array
   end
 end
