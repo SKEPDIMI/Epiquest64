@@ -5,3 +5,4 @@ Epiquest! But in the terminal
  - [] Adding more locations!
  - [] Adding interactivity with inventory
  - [] Adding armor and other wearables
+ - [] Adding interactivity with NPC's
