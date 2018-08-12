@@ -1,25 +1,31 @@
 require_relative 'models/user'
 require_relative 'agents/console'
 require_relative 'agents/map'
+require_relative 'agents/NPCs'
 
 class User_model
   include User
 end
 
-class Game_Map
-  include Map
+class Map_Agent
+  include Map_model
 end
 
-class Console_model
-  include Console
+class Console_Agent
+  include Console_model
+end
+
+class NPCs_Agent
+  include NPCs_model
 end
 
 module Engine
   def initialize(controller)
     @controller = controller
 
-    @controller.connect(Console_model.new(controller), 'console')
-    @controller.connect(Game_Map.new(controller), 'map')
+    @controller.connect(Console_Agent.new(controller), 'console')
+    @controller.connect(Map_Agent.new(controller), 'map')
+    @controller.connect(NPCs_Agent.new(controller), 'npcs')
 
     # @npcs = NPCs.new(controller)
   end

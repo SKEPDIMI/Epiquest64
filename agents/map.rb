@@ -64,7 +64,7 @@ class Finish < Location
   end
 end
 
-module Map
+module Map_model
   ## MAP MODULE
   # The map will contain a hash, making it possible to access locations from the engine
   # e.g:

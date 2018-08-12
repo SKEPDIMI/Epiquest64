@@ -4,7 +4,7 @@ class Func
   include Func_model
 end
 
-module Console
+module Console_model
   def initialize(controller)
     @func = Func.new
     @controller = controller
@@ -124,5 +124,9 @@ module Console
     else
       return get_input()
     end
+  end
+
+  def dialogue(name, message)
+    puts "@#{name}: \"#{message}\""
   end
 end

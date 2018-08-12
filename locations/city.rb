@@ -67,14 +67,15 @@ end
 
 module CityMarketFishingShop_model
   def enter
-    # @npc_snapper = npcs.human['SNAPPER'].new @controller
+    @npc_snapper = @controller.at('npcs').get('_SNAPPER');
     puts "You enter Snapper's fishing store"
     
-    # @npc_snapper.dialogue
+    @npc_snapper.greet
     
     response = @controller.at('console').prompt('What would you like to do?', [
       'Sell fish',
-      'Buy fish'
+      'Buy fish',
+      'Exit store'
     ]);
 
     if response == 1 # We want to sell to Snapper
@@ -99,6 +100,8 @@ module CityMarketFishingShop_model
           # @npc_snapper.goodbye
         end
       end
+    elsif response == 3
+      # @npc_snapper.goobye
     end
 
     response = @controller.at('console').prompt('What would you like to do now?', [
