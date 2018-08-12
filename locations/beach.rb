@@ -1,7 +1,7 @@
 module Beach_model
   def enter
     puts "You arrive at the beach"
-    response = @console.prompt("What do you do?", ["Fish", "Head to docks", "Go to city"]);
+    response = @controller.at('console').prompt("What do you do?", ["Fish", "Head to docks", "Go to city"]);
 
     if response == 1
       return "_BEACH_FISH"
@@ -19,30 +19,30 @@ end
 module BeachFish_model
   def enter
     puts "You sit by the hedge of a small rock cliff by the water"
-    user = @controller.get('user')
+    user = @controller.getData('user')
     fishing_rod = user.fishing_rod
 
     if fishing_rod.health <= 0
       puts "You swing your fishing rod out into the water only to have it snap in half"
     else
-      @console.clearScreen()
+      @controller.at('console').clearScreen()
       puts "You begin fishing"
 
       result = fishing_rod.launch()
       
-      @console.clearScreen()
+      @controller.at('console').clearScreen()
 
       if !result
-        @console.prompt "Tough luck.. You didnt catch anything!"
+        @controller.at('console').prompt "Tough luck.. You didnt catch anything!"
       elsif result
-        @console.prompt "You caught a #{result['name']}! #{result['description']}"
-        response = @console.prompt("Keep item?", ["Yes", "No"])
+        @controller.at('console').prompt "You caught a #{result['name']}! #{result['description']}"
+        response = @controller.at('console').prompt("Keep item?", ["Yes", "No"])
         if response == 1
           @controller.addToInventory(result)
           puts "Added #{result['name']} to inventory!"
         end
       end
-      response = @console.prompt("What do you do now?", ["Fish again", "Back to beach"])
+      response = @controller.at('console').prompt("What do you do now?", ["Fish again", "Back to beach"])
 
       if response == 1
         return '_BEACH_FISH'
@@ -60,14 +60,14 @@ module BeachDocks_model
   def enter
     timeOfDay = @controller.timeOfDay;
 
-    user = @controller.get('user');
+    user = @controller.getData('user');
     puts "You arrive at the docks"
 
     if timeOfDay.include? "night"
-      @console.prompt "The docks are closed at this time. Come back in the morning"
+      @controller.at('console').prompt "The docks are closed at this time. Come back in the morning"
       return "_BEACH"
     else
-      response = @console.prompt("Where do you want do go?", [
+      response = @controller.at('console').prompt("Where do you want do go?", [
         "Deep sea fishing (5 silver, 3 hours)",
         "Tamarin island (27 copper)",
         "Miradona (10 gold)"
@@ -75,7 +75,7 @@ module BeachDocks_model
 
       if response == 1
         if user.money < 500
-          @console.prompt "You dont have enough money (#{user.money/100} / 5 silver)"
+          @controller.at('console').prompt "You dont have enough money (#{user.money/100} / 5 silver)"
           return "_BEACH_DOCKS"
         else
           @controller.addMoney(-500)
@@ -83,7 +83,7 @@ module BeachDocks_model
         end
       elsif response == 2
         if user.money < 27
-          @console.prompt "You dont have enough money (#{user.money} / 27 copper)"
+          @controller.at('console').prompt "You dont have enough money (#{user.money} / 27 copper)"
           return "_BEACH_DOCKS"
         else
           @controller.addMoney(-27)
@@ -91,7 +91,7 @@ module BeachDocks_model
         end
       elsif response == 3
         if user.money < 10000
-          @console.prompt "You dont have enough money (#{user.money / 10000} / 10 gold)"
+          @controller.at('console').prompt "You dont have enough money (#{user.money / 10000} / 10 gold)"
           return "_BEACH_DOCKS"
         else
           @controller.addMoney(-10000)
@@ -102,7 +102,7 @@ module BeachDocks_model
   end
   def travelling_display(id, name, days)
     console.clearScreen()
-    
+
     Whirly.start spinner: "clock" do
       Whirly.status = "Mounting boat.."
       sleep 5
@@ -114,7 +114,7 @@ module BeachDocks_model
 
     i = 0
     while i < days
-      @console.clearScreen()
+      @controller.at('console').clearScreen()
       if i % 2 == 0
         Whirly.start spinner: "earth" do
           Whirly.status = "Travelling to #{name}.."

@@ -1,9 +1,4 @@
 require_relative '../util/func'
-require_relative '../util/console'
-
-class Console_model
-  include Console
-end
 
 class Func
   include Func_model
@@ -11,7 +6,6 @@ end
 
 module FishingRod_model
   def initialize(controller)
-    @console = Console_model.new(controller)
     @controller = controller
     @func = Func.new
     @health = 10

@@ -8,11 +8,18 @@ module Controller
   def initialize(game_data)
     @game_data = game_data
     @data_controller = DataController.new
+    @connected = {}
   end
-  def get(prop)
+  def connect(agent, name)
+    @connected[name] = agent
+  end
+  def at(name)
+    return @connected[name]
+  end
+  def getData(prop)
     return @game_data[prop]
   end
-  def set(prop, value)
+  def setData(prop, value)
     @game_data[prop] = value
   end
   def addTime(seconds = 0) # Changes from real life seconds to game hours / days

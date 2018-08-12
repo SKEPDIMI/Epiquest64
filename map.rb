@@ -1,11 +1,6 @@
-require_relative 'util/console'
 require_relative 'locations/start'
 require_relative 'locations/city'
 require_relative 'locations/beach'
-
-class Console_model
-  include Console
-end
 
 class Location
   ## LOCATION CLASS
@@ -15,7 +10,6 @@ class Location
 
   def initialize(controller)
     @controller = controller
-    @console = Console_model.new(controller)
   end
   def enter
     puts "THIS LOCATION's ENTER METHOD HAS NOT BEEN CONFIGURED YET"
@@ -39,6 +33,14 @@ class CityMarket < Location
   include CityMarket_model
 end
 
+class CityMarketFishing < Location
+  include CityMarketFishing_model
+end
+
+class CityMarketFishingShop < Location
+  include CityMarketFishingShop_model
+end
+
 class Beach < Location
   include Beach_model
 end
@@ -53,7 +55,7 @@ end
 
 class Finish < Location
   def enter()
-    @console.display("Game ends here")
+    @controller.at('console').display("Game ends here")
     exit(0)
   end
 
@@ -74,6 +76,8 @@ module Map
       '_START' => Start.new(controller),
       '_CITY' => City.new(controller),
         '_CITY_MARKET' => CityMarket.new(controller),
+          '_CITY_MARKET_FISH' => CityMarketFishing.new(controller),
+            '_CITY_MARKET_FISH_SHOP' => CityMarketFishingShop.new(controller),
       '_BEACH' => Beach.new(controller),
         '_BEACH_FISH' => BeachFish.new(controller),
         '_BEACH_DOCKS' => BeachDocks.new(controller),
