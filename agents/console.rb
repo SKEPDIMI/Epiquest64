@@ -28,10 +28,10 @@ module Console
     if response[0] === '#' # This will detect commands from the user
       stripped = response.gsub(/\s+/, "")
       if (stripped === '#time')
-        log "Time is #{@controller.timeOfDay} (#{@controller.get('time')})"
+        log "Time is #{@controller.timeOfDay} (#{@controller.getData('time')})"
       elsif (stripped == "#get")
         # Find arguments and return data
-        user = @controller.get('user')
+        user = @controller.getData('user')
         if user == nil 
           log "No user has been initialized"
         else
@@ -62,7 +62,7 @@ module Console
       elsif stripped == '#exit'
         exit(0)
       elsif stripped == "#inventory"
-        user = @controller.get('user')
+        user = @controller.getData('user')
         if user == nil 
           log "No user has been initialized"
         else
