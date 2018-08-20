@@ -3,29 +3,29 @@ require_relative 'agents/console'
 require_relative 'agents/map'
 require_relative 'agents/NPCs'
 
-class User_model
+class UserModel
   include User
 end
 
-class Map_Agent
-  include Map_model
+class MapAgent
+  include MapModel
 end
 
-class Console_Agent
-  include Console_model
+class ConsoleAgent
+  include ConsoleModel
 end
 
-class NPCs_Agent
-  include NPCs_model
+class NPCsAgent
+  include NPCsModel
 end
 
 module Engine
   def initialize(controller)
     @controller = controller
 
-    @controller.connect(Console_Agent.new(controller), 'console')
-    @controller.connect(Map_Agent.new(controller), 'map')
-    @controller.connect(NPCs_Agent.new(controller), 'npcs')
+    @controller.connect(ConsoleAgent.new(controller), 'console')
+    @controller.connect(MapAgent.new(controller), 'map')
+    @controller.connect(NPCsAgent.new(controller), 'npcs')
 
     # @npcs = NPCs.new(controller)
   end
@@ -49,7 +49,7 @@ module Engine
     
     name = @controller.at('console').prompt("What is your name, traveller?").capitalize
     
-    @controller.setData('user', User_model.new(@controller, name));
+    @controller.setData('user', UserModel.new(@controller, name));
     user = @controller.getData('user');
 
     @controller.at('console').display("An honor to meet you, #{user.name}.\n# Let us begin our quest.\n> PRESS ENTER TO BEGIN");
