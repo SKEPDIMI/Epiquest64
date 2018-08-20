@@ -1,13 +1,13 @@
-require_relative 'util/data_controller'
+require_relative 'util/dataController'
 
 class DataController
-  include DataController_model
+  include DataControllerModel
 end
 
 module Controller
-  def initialize(game_data)
-    @game_data = game_data
-    @data_controller = DataController.new
+  def initialize(gameData)
+    @gameData = gameData
+    @dataController = DataController.new
     @connected = {}
   end
   def connect(agent, name)
@@ -17,28 +17,28 @@ module Controller
     return @connected[name]
   end
   def getData(prop)
-    return @game_data[prop]
+    return @gameData[prop]
   end
   def setData(prop, value)
-    @game_data[prop] = value
+    @gameData[prop] = value
   end
   def addTime(seconds = 0) # Changes from real life seconds to game hours / days
     # 8.64 seconds in a day
     # 1 second in game time is 0.0001
     # 1 real second is 70% times faster in game
 
-    seconds_in_day = 86400
-    game_time_factor = 0.00017 #0.0001 (1 game sec) * 1.7 (70%)
-    seconds_in_game_day = seconds_in_day * game_time_factor
+    secondsInDay = 86400
+    gameTimeFactor = 0.00017 #0.0001 (1 game sec) * 1.7 (70%)
+    secondsInGameDay = secondsInDay * gameTimeFactor
 
-    game_seconds = (seconds * game_time_factor) # Game seconds are %70 faster
-    days_passed = (game_seconds * seconds_in_game_day).floor
+    gameSeconds = (seconds * gameTimeFactor) # Game seconds are %70 faster
+    # daysPassed = (gameSeconds * secondsInGameDay).floor
 
-    @game_data['time'] += game_seconds % seconds_in_game_day
-    @game_data['days'] = (@game_data['time'] / 24).floor
+    @gameData['time'] += gameSeconds % secondsInGameDay
+    @gameData['days'] = (@gameData['time'] / 24).floor
   end
   def timeOfDay
-    time = @game_data['time']
+    time = @gameData['time']
     case
     when time >= 23 && time <= 1 # 10PM - 1AM
       return 'midnight'
@@ -54,11 +54,11 @@ module Controller
   end
   def addToInventory(item)
     if (item['type'] === '_money')
-      @game_data['user'].money += item.price
+      @gameData['user'].money += item.price
     else
-      inventory = @game_data['user'].inventory
+      inventory = @gameData['user'].inventory
       if inventory.length < 50
-        @game_data['user'].inventory << {'_ref' => item['_ref'], '_id' => item['_id']}
+        @gameData['user'].inventory << {'_ref' => item['_ref'], '_id' => item['_id']}
       else
         response = @connected['console'].prompt("YOUR INVENTORY IS FULL! Would you like to make space or discard item?", [
           'Yes',
@@ -68,7 +68,7 @@ module Controller
           deleted = @connected['console'].deleteFromInventory
 
           if deleted
-            @game_data['user'].inventory << {'_ref' => item['_ref'], '_id' => item['_id']}
+            @gameData['user'].inventory << {'_ref' => item['_ref'], '_id' => item['_id']}
             @connected['console'].display("Saved item in inventory!")
           end
         end
@@ -76,16 +76,16 @@ module Controller
     end
   end
   def getInventoryPopulated
-    u_inventory = (@game_data['user'].inventory).dup
-    i_inventory = @data_controller.populate(u_inventory) # populated inventory
+    u_inventory = (@gameData['user'].inventory).dup
+    i_inventory = @dataController.populate(u_inventory) # populated inventory
 
     return i_inventory
   end
   def addMoney(m)
-    @game_data['user'].money += m
+    @gameData['user'].money += m
   end
   def deleteOneFromInventory(item)
-    _inventory = @game_data['user'].inventory
+    _inventory = @gameData['user'].inventory
 
     _inventory.each_with_index do |x, i|
       if x['_id'] === item['_id']
@@ -94,13 +94,13 @@ module Controller
       end
     end
   end
-  def data_findOne(collection, q = {})
-    return @data_controller.findOne(collection, q)
+  def dataFindOne(collection, q = {})
+    return @dataController.findOne(collection, q)
   end
-  def data_findById(collection, id)
-    return @data_controller.findById(collection, id)
+  def dataFindById(collection, id)
+    return @dataController.findById(collection, id)
   end
-  def data_find(collection, q = {})
-    return @data_controller.find(collection, q)
+  def dataFind(collection, q = {})
+    return @dataController.find(collection, q)
   end
 end

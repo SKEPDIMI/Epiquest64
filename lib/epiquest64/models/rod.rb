@@ -1,10 +1,10 @@
 require_relative '../util/func'
 
 class Func
-  include Func_model
+  include FuncModel
 end
 
-module FishingRod_model
+module FishingRodModel
   def initialize(controller)
     @controller = controller
     @func = Func.new
@@ -20,13 +20,13 @@ module FishingRod_model
     # They also have requirement like time or power
 
     timeOfDay = @controller.timeOfDay
-    fish_record = @controller.data_find('fishing_loot');
+    fishRecord = @controller.dataFind('fishing_loot');
 
-    x = @func.generate_luck()
+    x = @func.generateLuck()
     
-    available = fish_record.delete_if { |key, value| value['rarity'] > x } # Only fish with a rarity less / equal to our luck
+    available = fishRecord.delete_if { |key, value| value['rarity'] > x } # Only fish with a rarity less / equal to our luck
 
-    fish_record = @controller.data_find('fishing_loot');
+    fishRecord = @controller.dataFind('fishing_loot');
 
     available.each do |key, value| # Will filter out our choice based off requirements
       requirements = value['requirements']

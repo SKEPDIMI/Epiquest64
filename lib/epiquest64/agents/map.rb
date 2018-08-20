@@ -22,35 +22,35 @@ class Location
 end
 
 class Start < Location
-  include Start_model
+  include StartModel
 end
 
 class City < Location
-  include City_model
+  include CityModel
 end
 
 class CityMarket < Location
-  include CityMarket_model
+  include CityMarketModel
 end
 
 class CityMarketFishing < Location
-  include CityMarketFishing_model
+  include CityMarketFishingModel
 end
 
 class CityMarketFishingShop < Location
-  include CityMarketFishingShop_model
+  include CityMarketFishingShopModel
 end
 
 class Beach < Location
-  include Beach_model
+  include BeachModel
 end
 
 class BeachFish < Location
-  include BeachFish_model
+  include BeachFishModel
 end
 
 class BeachDocks < Location
-  include BeachDocks_model
+  include BeachDocksModel
 end
 
 class Finish < Location
@@ -64,7 +64,7 @@ class Finish < Location
   end
 end
 
-module Map_model
+module MapModel
   ## MAP MODULE
   # The map will contain a hash, making it possible to access locations from the engine
   # e.g:

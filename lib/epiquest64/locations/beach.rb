@@ -1,4 +1,4 @@
-module Beach_model
+module BeachModel
   def enter
     puts "You arrive at the beach"
     response = @controller.at('console').prompt("What do you do?", ["Fish", "Head to docks", "Go to city"]);
@@ -16,19 +16,19 @@ module Beach_model
   end
 end
 
-module BeachFish_model
+module BeachFishModel
   def enter
     puts "You sit by the hedge of a small rock cliff by the water"
     user = @controller.getData('user')
-    fishing_rod = user.fishing_rod
+    fishingRod = user.fishingRod
 
-    if fishing_rod.health <= 0
+    if fishingRod.health <= 0
       puts "You swing your fishing rod out into the water only to have it snap in half"
     else
       @controller.at('console').clearScreen()
       puts "You begin fishing"
 
-      result = fishing_rod.launch()
+      result = fishingRod.launch()
       
       @controller.at('console').clearScreen()
 
@@ -57,7 +57,7 @@ module BeachFish_model
   end
 end
 
-module BeachDocks_model
+module BeachDocksModel
   def enter
     timeOfDay = @controller.timeOfDay;
 
@@ -81,7 +81,7 @@ module BeachDocks_model
           return "_BEACH_DOCKS"
         else
           @controller.addMoney(-500)
-          return travelling_display('_BEACH_DEEPSEA', 'the deep sea', 1)
+          return travellingDisplay('_BEACH_DEEPSEA', 'the deep sea', 1)
         end
       elsif response == 2
         if user.money < 27
@@ -89,7 +89,7 @@ module BeachDocks_model
           return "_BEACH_DOCKS"
         else
           @controller.addMoney(-27)
-          return travelling_display('_TAMARINISLAND', 'Tamarin island', 2)
+          return travellingDisplay('_TAMARINISLAND', 'Tamarin island', 2)
         end
       elsif response == 3
         if user.money < 10000
@@ -97,14 +97,14 @@ module BeachDocks_model
           return "_BEACH_DOCKS"
         else
           @controller.addMoney(-10000)
-          return travelling_display('_MIRADONA', 'Miradona', (rand(5..6)).round)
+          return travellingDisplay('_MIRADONA', 'Miradona', (rand(5..6)).round)
         end
       elsif response == 4
         return '_BEACH'
       end
     end
   end
-  def travelling_display(id, name, days)
+  def travellingDisplay(id, name, days)
     @controller.at('console').clearScreen()
 
     Whirly.start spinner: "clock" do

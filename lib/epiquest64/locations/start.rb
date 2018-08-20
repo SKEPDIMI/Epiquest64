@@ -1,4 +1,4 @@
-module Start_model
+module StartModel
   def enter()
     timeOfDay = @controller.timeOfDay
     day = @controller.getData('day')

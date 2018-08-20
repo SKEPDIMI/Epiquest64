@@ -13,10 +13,10 @@ class NPC
 end
 
 class Snapper < NPC
-  include Snapper_model
+  include SnapperModel
 end
 
-module NPCs_model
+module NPCsModel
   def initialize(controller)
     @@npcs = {
       '_SNAPPER' => Snapper.new(controller),

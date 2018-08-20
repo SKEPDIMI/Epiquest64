@@ -1,6 +1,6 @@
 require 'json'
 
-module DataController_model
+module DataControllerModel
   def initialize
     @data = {} # This should not be changed after it has been initialized
     Dir[__dir__ + '/../../../data/*.json'].each do |filepath| # Turns @data into hash of collections based off the data directory
@@ -86,14 +86,14 @@ module DataController_model
   end
 
   def populate(array)
-    populated_array = []
+    populatedArray = []
     array.each do |item|
-      # find id that matches in @data and add it to p_array
+      # find id that matches in @data and add it to pArray
 
-      p_item = findById(item['_ref'], item['_id'])
-      populated_array << p_item
+      pItem = findById(item['_ref'], item['_id'])
+      populatedArray << pItem
     end
 
-    return populated_array
+    return populatedArray
   end
 end

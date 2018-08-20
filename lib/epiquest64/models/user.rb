@@ -1,14 +1,14 @@
 require_relative 'rod'
 
 class FishingRod
-  include FishingRod_model
+  include FishingRodModel
 end
 
 module User
   def initialize(controller, name = 'adventurer')
     @name = name
     @money = 0
-    @fishing_rod = FishingRod.new(controller)
+    @fishingRod = FishingRod.new(controller)
     @inventory = [ # FOR TESTING ONLY. THIS SHOULD BE EMPTY
       {'_ref' => 'fishing_loot', '_id' => "a8"},
       {'_ref' => 'fishing_loot', '_id' => "a5"}
@@ -21,5 +21,5 @@ module User
     @name.capitalize
   end
 
-  attr_accessor :name, :money, :fishing_rod, :xp, :level, :inventory
+  attr_accessor :name, :money, :fishingRod, :xp, :level, :inventory
 end

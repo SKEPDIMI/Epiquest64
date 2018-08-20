@@ -1,4 +1,4 @@
-module Snapper_model
+module SnapperModel
   def initialize(controller)
     @@name = "Snapper the fish merchant"
     @@greetings = [
@@ -49,18 +49,18 @@ module Snapper_model
       buy = true
       while buy == true
         @controller.at('console').clearScreen()
-        # @npc_snapper.buy
+        # @npcSnapper.buy
         # FOR TESTING:
         @controller.addToInventory({'_id' => 'a1'})
         @controller.at('console').display('Bought gold fish! Awesome!')
         response = @controller.at('console').prompt('Buy again?', ['Yes', 'No'])
         if response == 2
           buy = false
-          # @npc_snapper.goodbye
+          # @npcSnapper.goodbye
         end
       end
     elsif response == 3
-      # @npc_snapper.goobye
+      # @npcSnapper.goobye
     end
   end
 end

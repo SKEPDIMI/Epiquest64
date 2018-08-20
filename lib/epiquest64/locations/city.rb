@@ -1,4 +1,4 @@
-module City_model
+module CityModel
   def enter
     timeOfDay = @controller.timeOfDay
     puts "You arrive at the city entrance"
@@ -20,7 +20,7 @@ module City_model
   end
 end
 
-module CityMarket_model
+module CityMarketModel
   def enter
     timeOfDay = @controller.timeOfDay
     puts 'We arrive to the market.'
@@ -49,7 +49,7 @@ module CityMarket_model
   end
 end
 
-module CityMarketFishing_model
+module CityMarketFishingModel
   def enter
     puts "You enter the fish market"
     response = @controller.at('console').prompt("Where would you like to go?", [
@@ -72,13 +72,13 @@ module CityMarketFishing_model
   end
 end
 
-module CityMarketFishingShop_model
+module CityMarketFishingShopModel
   def enter
-    @npc_snapper = @controller.at('npcs').get('_SNAPPER');
+    @npcSnapper = @controller.at('npcs').get('_SNAPPER');
     puts "You enter Snapper's fishing store"
     
-    @npc_snapper.greet
-    @npc_snapper.business
+    @npcSnapper.greet
+    @npcSnapper.business
 
     response = @controller.at('console').prompt('What would you like to do now?', [
       'Stay in store',
