@@ -1,6 +1,6 @@
 require 'json'
 
-module DataControllerModel
+class DataController
   def initialize
     @data = {} # This should not be changed after it has been initialized
     Dir[__dir__ + '/../../../data/*.json'].each do |filepath| # Turns @data into hash of collections based off the data directory

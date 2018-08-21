@@ -1,10 +1,6 @@
 require_relative '../util/func'
 
-class Func
-  include FuncModel
-end
-
-module FishingRodModel
+class FishingRod
   def initialize(controller)
     @controller = controller
     @func = Func.new

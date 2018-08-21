@@ -1,10 +1,6 @@
 require_relative 'util/dataController'
 
-class DataController
-  include DataControllerModel
-end
-
-module Controller
+class Controller
   def initialize(gameData)
     @gameData = gameData
     @dataController = DataController.new

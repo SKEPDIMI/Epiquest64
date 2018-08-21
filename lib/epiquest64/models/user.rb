@@ -1,10 +1,6 @@
 require_relative 'rod'
 
-class FishingRod
-  include FishingRodModel
-end
-
-module User
+class User
   def initialize(controller, name = 'adventurer')
     @name = name
     @money = 0

@@ -1,4 +1,4 @@
-module SnapperModel
+class Snapper
   def initialize(controller)
     @@name = "Snapper the fish merchant"
     @@greetings = [

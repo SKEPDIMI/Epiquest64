@@ -21,6 +21,7 @@ class Location
   end
 end
 
+# ALL LOCATION MODELS MUST BE STATED TO BE CHILDREN OF "LOCATION"
 class Start < Location
   include StartModel
 end
@@ -64,7 +65,7 @@ class Finish < Location
   end
 end
 
-module MapModel
+class Map
   ## MAP MODULE
   # The map will contain a hash, making it possible to access locations from the engine
   # e.g:

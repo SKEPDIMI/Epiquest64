@@ -1,22 +1,6 @@
 require_relative "../npcs/city/Snapper"
 
-class NPC
-  def initialize(controller)
-    @controller = controller
-  end
-  def greet
-    puts "THIS NPC HAS NOT BEEN CONFIGURED YET"
-  end
-  def goodbye
-    puts "THIS NPC HAS NOT BEEN CONFIGURED YET"
-  end
-end
-
-class Snapper < NPC
-  include SnapperModel
-end
-
-module NPCsModel
+class NPCs
   def initialize(controller)
     @@npcs = {
       '_SNAPPER' => Snapper.new(controller),

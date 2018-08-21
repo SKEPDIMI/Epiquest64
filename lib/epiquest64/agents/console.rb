@@ -1,10 +1,6 @@
 require_relative '../util/func'
 
-class Func
-  include FuncModel
-end
-
-module ConsoleModel
+class Console
   def initialize(controller)
     @func = Func.new
     @controller = controller

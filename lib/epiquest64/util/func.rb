@@ -1,4 +1,4 @@
-module FuncModel
+class Func
   def generateLuck
     n = rand(100)
     
