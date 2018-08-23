@@ -15,7 +15,7 @@ class Console
   def log(message)
     puts("log >> #{message.upcase}")
   end
-  
+
   def get_input() # Gets input from the user, or checks and runs commands
     # Please dont use get_input()/prompt() inside get_input :)
     @start_time = Time.now
@@ -29,13 +29,13 @@ class Console
       elsif (stripped == "#get")
         # Find arguments and return data
         user = @controller.getData('user')
-        if user == nil 
+        if user == nil
           display "No user has been initialized"
         else
           display """
           NAME: #{user.name}
           MONEY: #{@func.toReadableMoney(user.money)}
-          FISHING_ROD_HEALTH: #{user.fishing_rod.health}
+          FISHING_ROD_HEALTH: #{user.fishingRod.health}
           XP: #{user.xp}
           LEVEL: #{user.level}
           """
@@ -63,7 +63,7 @@ class Console
       else
         display "Unknown command: #{stripped}"
       end
-    
+
       finish_time()
       return get_input()
     end
@@ -88,12 +88,12 @@ class Console
       puts "\e[4m#{message}\e[24m"
     end
   end
-  
+
   def display(message)
     print_format("\n# #{message}\n", 'red')
     $stdin.gets.chomp
   end
-  
+
   def prompt(message, options = false, format = false)
     if options # Make sure the user's option is valid
       while true
@@ -103,19 +103,19 @@ class Console
           puts "* #{option}"
         end
         response = get_input()
-  
+
         if response.gsub(/\s+/, "") == ""
           display "> Empty response"
           next
         end
-    
+
         options.each_with_index do |option, i|
           if option.downcase.include? response
             return i+1 # Return the index+1 of the selected option
           end
         end
       end
-  
+
       # The response is invalid
       clearScreen()
       print_format("I'm not sure what that means", 'italic')
@@ -142,7 +142,7 @@ class Console
 
   def showInventory
     user = @controller.getData('user')
-    if user == nil 
+    if user == nil
       log "No user has been initialized"
     else
       user = @controller.getData('user')
