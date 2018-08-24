@@ -16,60 +16,64 @@ class Console
     puts("log >> #{message.upcase}")
   end
 
+
+  def run(command)
+    command = command.split " "
+    case command[0]
+    when "#time"
+      display "Time is #{@controller.timeOfDay} (#{@controller.getData('time')} on day #{@controller.getData('day')})"
+    when "#set_time"
+      if command[1] == ''
+        display "No argument provided"
+      else
+        time = command[1].to_i
+        if time > 24 || time < 0
+          display "Time must be between 0 and 24"
+        else
+          @controller.set('time', time)
+          display "Set time to #{time}"
+        end
+      end
+    when "#get"
+      user = @controller.getData('user')
+      if user == nil
+        display "No user has been initialized"
+      else
+        display """
+        NAME: #{user.name}
+        MONEY: #{@func.toReadableMoney(user.money)}
+        FISHING_ROD_HEALTH: #{user.fishingRod.health}
+        XP: #{user.xp}
+        LEVEL: #{user.level}
+        """
+      end
+    when "#inventory"
+      showInventory()
+    when "#gen_luck"
+      x = @func.generate_luck
+      puts x
+    when "#exit"
+      exit 0
+    else
+      display "Unknown command: #{command[0]}"
+    end
+  end
+
   def get_input() # Gets input from the user, or checks and runs commands
     # Please dont use get_input()/prompt() inside get_input :)
     @start_time = Time.now
 
     print "\nresponse > "
-    response = $stdin.gets.chomp.downcase
-    if response[0] === '#' # This will detect commands from the user
-      stripped = response.gsub(/\s+/, "")
-      if (stripped === '#time')
-        display "Time is #{@controller.timeOfDay} (#{@controller.getData('time')} on day #{@controller.getData('day')})"
-      elsif (stripped == "#get")
-        # Find arguments and return data
-        user = @controller.getData('user')
-        if user == nil
-          display "No user has been initialized"
-        else
-          display """
-          NAME: #{user.name}
-          MONEY: #{@func.toReadableMoney(user.money)}
-          FISHING_ROD_HEALTH: #{user.fishingRod.health}
-          XP: #{user.xp}
-          LEVEL: #{user.level}
-          """
-        end
-      elsif stripped[0..7] == '#settime'
-        arg = stripped.gsub('#settime', '')
-        if arg == ''
-          display "No argument provided"
-        else
-          time = arg.to_i
-          if time > 24 || time < 0
-            display "Time must be between 0 and 24"
-          else
-            @controller.set('time', time)
-            display "Set time to #{time}"
-          end
-        end
-      elsif stripped == '#gen_luck'
-        x = @func.generate_luck
-        puts x
-      elsif stripped == '#exit'
-        exit(0)
-      elsif stripped == "#inventory"
-        showInventory()
-      else
-        display "Unknown command: #{stripped}"
-      end
 
-      finish_time()
-      return get_input()
-    end
+    response = $stdin.gets.chomp.downcase
+    run response if is_сommand? response
 
     finish_time()
     return response
+  end
+
+  def is_сommand?(text)
+    text.match /^#/
   end
 
   def clearScreen
