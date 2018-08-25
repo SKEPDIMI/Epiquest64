@@ -8,7 +8,7 @@ class Console
   end
 
   def finish_time
-    @controller.addTime(Time.now - @start_time)
+    @controller.add_time(Time.now - @start_time)
     @start_time = false
   end
 
@@ -21,7 +21,7 @@ class Console
     command = command.split " "
     case command[0]
     when "#time"
-      display "Time is #{@controller.timeOfDay} (#{@controller.getData('time')} on day #{@controller.getData('day')})"
+      display "Time is #{@controller.time_of_day} (#{@controller.getData('time')} on day #{@controller.getData('day')})"
     when "#set_time"
       if command[1] == ''
         display "No argument provided"
@@ -41,14 +41,14 @@ class Console
       else
         display """
         NAME: #{user.name}
-        MONEY: #{@func.toReadableMoney(user.money)}
+        MONEY: #{@func.to_readable_money(user.money)}
         FISHING_ROD_HEALTH: #{user.fishingRod.health}
         XP: #{user.xp}
         LEVEL: #{user.level}
         """
       end
     when "#inventory"
-      showInventory()
+      show_inventory()
     when "#gen_luck"
       x = @func.generate_luck
       puts x
@@ -144,20 +144,20 @@ class Console
     puts "@#{name}: \"#{message}\""
   end
 
-  def showInventory
+  def show_inventory
     user = @controller.getData('user')
     if user == nil
       log "No user has been initialized"
     else
       user = @controller.getData('user')
-      inventory = @controller.getInventoryPopulated
+      inventory = @controller.get_inventory_populated
       if inventory.length == 0
         puts "*-= INVENTORY IS EMPTY 0/50 =-*"
         return false
       else
         display_text = "*-= INVENTORY #{inventory.length}/50 =-*\n"
         inventory.each_with_index do |item, i|
-          price = @func.toReadableMoney(item['price'])
+          price = @func.to_readable_money(item['price'])
           display_text += "|#{i + 1}| [#{item['name']}] | \"#{item['description']} \" | price: #{price} |\n"
         end
         display(display_text)
@@ -167,7 +167,7 @@ class Console
   end
   def getFromInventory
     while true
-      inventory = showInventory()
+      inventory = show_inventory()
       if !inventory
         display "NO ITEMS TO SELECT"
         return false
@@ -195,7 +195,7 @@ class Console
   end
   def deleteFromInventory
     while true
-      inventory = showInventory()
+      inventory = show_inventory()
       if !inventory
         display "NO ITEMS TO SELECT"
         return false

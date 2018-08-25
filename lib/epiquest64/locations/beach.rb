@@ -59,12 +59,12 @@ end
 
 module BeachDocksModel
   def enter
-    timeOfDay = @controller.timeOfDay;
+    time_of_day = @controller.time_of_day;
 
     user = @controller.getData('user');
     puts "You arrive at the docks"
 
-    if timeOfDay.include? "night"
+    if time_of_day.include? "night"
       @controller.at('console').display "The docks are closed at this time. Come back in the morning"
       return "_BEACH"
     else

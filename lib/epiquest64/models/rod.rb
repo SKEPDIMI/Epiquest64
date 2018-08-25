@@ -15,10 +15,10 @@ class FishingRod
     # Fish have a rarity level from -1 to 5
     # They also have requirement like time or power
 
-    timeOfDay = @controller.timeOfDay
+    time_of_day = @controller.time_of_day
     fishRecord = @controller.dataFind('fishing_loot');
 
-    x = @func.generateLuck()
+    x = @func.generate_luck()
     
     available = fishRecord.delete_if { |key, value| value['rarity'] > x } # Only fish with a rarity less / equal to our luck
 
@@ -29,7 +29,7 @@ class FishingRod
 
       if requirements # If fish has requirements to catch
         if requirements['time'] # If time is a requirement
-          if !requirements['time'].include?(timeOfDay) # If we dont have this requirement, delete fish
+          if !requirements['time'].include?(time_of_day) # If we dont have this requirement, delete fish
             available.delete(key)
           end
         end

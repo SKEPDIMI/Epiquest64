@@ -1,9 +1,9 @@
 require_relative 'util/dataController'
 
 class Controller
-  def initialize(gameData)
-    @gameData = gameData
-    @dataController = DataController.new
+  def initialize(game_data)
+    @game_data = game_data
+    @data_controller = DataController.new
     @connected = {}
   end
   def connect(agent, name)
@@ -13,12 +13,12 @@ class Controller
     return @connected[name]
   end
   def getData(prop)
-    return @gameData[prop]
+    return @game_data[prop]
   end
   def setData(prop, value)
-    @gameData[prop] = value
+    @game_data[prop] = value
   end
-  def addTime(seconds = 0) # Changes from real life seconds to game hours / days
+  def add_time(seconds = 0) # Changes from real life seconds to game hours / days
     # 8.64 seconds in a day
     # 1 second in game time is 0.0001
     # 1 real second is 70% times faster in game
@@ -30,11 +30,11 @@ class Controller
     gameSeconds = (seconds * gameTimeFactor) # Game seconds are %70 faster
     # daysPassed = (gameSeconds * secondsInGameDay).floor
 
-    @gameData['time'] += gameSeconds % secondsInGameDay
-    @gameData['days'] = (@gameData['time'] / 24).floor
+    @game_data['time'] += gameSeconds % secondsInGameDay
+    @game_data['days'] = (@game_data['time'] / 24).floor
   end
-  def timeOfDay
-    time = @gameData['time']
+  def time_of_day
+    time = @game_data['time']
     case
     when time >= 23 && time <= 1 # 10PM - 1AM
       return 'midnight'
@@ -50,11 +50,11 @@ class Controller
   end
   def addToInventory(item)
     if (item['type'] === '_money')
-      @gameData['user'].money += item.price
+      @game_data['user'].money += item.price
     else
-      inventory = @gameData['user'].inventory
+      inventory = @game_data['user'].inventory
       if inventory.length < 50
-        @gameData['user'].inventory << {'_ref' => item['_ref'], '_id' => item['_id']}
+        @game_data['user'].inventory << {'_ref' => item['_ref'], '_id' => item['_id']}
       else
         response = @connected['console'].prompt("YOUR INVENTORY IS FULL! Would you like to make space or discard item?", [
           'Yes',
@@ -64,24 +64,24 @@ class Controller
           deleted = @connected['console'].deleteFromInventory
 
           if deleted
-            @gameData['user'].inventory << {'_ref' => item['_ref'], '_id' => item['_id']}
+            @game_data['user'].inventory << {'_ref' => item['_ref'], '_id' => item['_id']}
             @connected['console'].display("Saved item in inventory!")
           end
         end
       end
     end
   end
-  def getInventoryPopulated
-    u_inventory = (@gameData['user'].inventory).dup
-    i_inventory = @dataController.populate(u_inventory) # populated inventory
+  def get_inventory_populated
+    u_inventory = (@game_data['user'].inventory).dup
+    i_inventory = @data_controller.populate(u_inventory) # populated inventory
 
     return i_inventory
   end
   def addMoney(m)
-    @gameData['user'].money += m
+    @game_data['user'].money += m
   end
   def deleteOneFromInventory(item)
-    _inventory = @gameData['user'].inventory
+    _inventory = @game_data['user'].inventory
 
     _inventory.each_with_index do |x, i|
       if x['_id'] === item['_id']
@@ -91,12 +91,12 @@ class Controller
     end
   end
   def dataFindOne(collection, q = {})
-    return @dataController.findOne(collection, q)
+    return @data_controller.findOne(collection, q)
   end
   def dataFindById(collection, id)
-    return @dataController.findById(collection, id)
+    return @data_controller.findById(collection, id)
   end
   def dataFind(collection, q = {})
-    return @dataController.find(collection, q)
+    return @data_controller.find(collection, q)
   end
 end
