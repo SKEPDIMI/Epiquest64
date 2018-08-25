@@ -6,8 +6,8 @@ class User
     @money = 0
     @fishingRod = FishingRod.new(controller)
     @inventory = [ # FOR TESTING ONLY. THIS SHOULD BE EMPTY
-      {'_ref' => 'fishing_loot', '_id' => "a8"},
-      {'_ref' => 'fishing_loot', '_id' => "a5"}
+      {'_id' => "a8"},
+      {'_id' => "a5"}
     ]
     @xp = 0
     @level = 0

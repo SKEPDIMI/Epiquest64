@@ -48,7 +48,9 @@ class Controller
       return 'night'
     end
   end
-  def addToInventory(item)
+  def addToInventory(_id)
+    item = @data_controller.findById(_id, false)
+
     if (item['type'] === '_money')
       @game_data['user'].money += item.price
     else
@@ -90,13 +92,13 @@ class Controller
       end
     end
   end
-  def dataFindOne(collection, q = {})
-    return @data_controller.findOne(collection, q)
+  def dataFindOne(q = {}, ref = false)
+    return @data_controller.findOne(q, ref)
   end
-  def dataFindById(collection, id)
-    return @data_controller.findById(collection, id)
+  def dataFindById(id, ref = false)
+    return @data_controller.findById(id, ref)
   end
-  def dataFind(collection, q = {})
-    return @data_controller.find(collection, q)
+  def dataFind(q = {}, ref = false)
+    return @data_controller.find(q, ref)
   end
 end

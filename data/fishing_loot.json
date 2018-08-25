@@ -1,5 +1,6 @@
-{
-  "a0": {
+[
+  {
+    "_id": "a0",
     "type": "junk",
     "name": "tin can",
     "rarity": -1,
@@ -7,7 +8,8 @@
     "requirements": null,
     "price": 0
   },
-  "a1": {
+  {
+    "_id": "a1",
     "type": "fish",
     "name": "gold fish",
     "rarity": 0,
@@ -17,7 +19,8 @@
     },
     "price": 20
   },
-  "a2": {
+  {
+    "_id": "a2",
     "type": "fish",
     "name": "Dark Fish",
     "rarity": 1,
@@ -27,7 +30,8 @@
     },
     "price": 50
   },
-  "a3": {
+  {
+    "_id": "a3",
     "type": "fish",
     "name": "Guaba fish",
     "rarity": 2,
@@ -38,7 +42,8 @@
     },
     "price": 100
   },
-  "a4": {
+  {
+    "_id": "a4",
     "type": "junk",
     "name": "boot",
     "rarity": 3,
@@ -46,7 +51,8 @@
     "requirements": null,
     "price": 5
   },
-  "a5": {
+  {
+    "_id": "a5",
     "type": "_money",
     "name": "sack of coins",
     "rarity": 4,
@@ -54,7 +60,8 @@
     "requirements": null,
     "price": 2500
   },
-  "a6": {
+  {
+    "_id": "a6",
     "type": "fish",
     "name": "Dragon fish",
     "rarity": 4,
@@ -64,7 +71,8 @@
     },
     "price": 10000
   },
-  "a7": {
+  {
+    "_id": "a7",
     "type": "fish",
     "name": "Dark Dragon fish",
     "rarity": 5,
@@ -75,7 +83,8 @@
     },
     "price": 50000
   },
-  "a8": {
+  {
+    "_id": "a8",
     "type": "fish",
     "name": "Whale",
     "rarity": 3,
@@ -85,7 +94,8 @@
     },
     "price": 50000
   },
-  "a9": {
+  {
+    "_id": "a9",
     "type": "fish",
     "name": "Sea serpent",
     "rarity": 5,
@@ -95,7 +105,8 @@
     },
     "price": 50
   },
-  "a10": {
+  {
+    "_id": "a10",
     "type": "fish",
     "name": "Lion shark",
     "rarity": 2,
@@ -106,7 +117,8 @@
     },
     "price": 5000
   },
-  "a11": {
+  {
+    "_id": "a11",
     "type": "fish",
     "name": "Novenopus",
     "rarity": 4,
@@ -117,7 +129,8 @@
     },
     "price": 2500
   },
-  "a12": {
+  {
+    "_id": "a12",
     "type": "fish",
     "name": "Nautilus",
     "rarity": 3,
@@ -127,7 +140,8 @@
     },
     "price": 50
   },
-  "a13": {
+  {
+    "_id": "a13",
     "type": "fish",
     "name": "Walking fish",
     "rarity": 4,
@@ -137,7 +151,8 @@
     },
     "price": 1050
   },
-  "a14": {
+  {
+    "_id": "a14",
     "type": "fish",
     "name": "Sponge",
     "rarity": 4,
@@ -145,4 +160,4 @@
     "requirements": null,
     "price": 500
   }
-}
+]
