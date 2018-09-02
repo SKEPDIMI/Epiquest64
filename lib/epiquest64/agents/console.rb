@@ -8,12 +8,54 @@ class Console
   end
 
   def finish_time
-    @controller.addTime(Time.now - @start_time)
+    @controller.add_time(Time.now - @start_time)
     @start_time = false
   end
 
   def log(message)
     puts("log >> #{message.upcase}")
+  end
+
+  def run(command)
+    command = command.split " "
+    case command[0]
+    when "#time"
+      display "Time is #{@controller.time_of_day} (#{@controller.getData('time')} on day #{@controller.getData('day')})"
+    when "#set_time"
+      if command[1] == ''
+        display "No argument provided"
+      else
+        time = command[1].to_i
+        if time > 24 || time < 0
+          display "Time must be between 0 and 24"
+        else
+          @controller.set('time', time)
+          display "Set time to #{time}"
+        end
+      end
+    when "#get"
+      user = @controller.getData('user')
+      if user == nil
+        display "No user has been initialized"
+      else
+        display """
+        NAME: #{user.name}
+        MONEY: #{@func.to_readable_money(user.money)}
+        FISHING_ROD_HEALTH: #{user.fishingRod.health}
+        XP: #{user.xp}
+        LEVEL: #{user.level}
+        """
+      end
+    when "#inventory"
+      show_inventory()
+    when "#gen_luck"
+      x = @func.generate_luck
+      puts x
+    when "#exit"
+      exit 0
+    else
+      display "Unknown command: #{command[0]}"
+    end
   end
 
   def get_input() # Gets input from the user, or checks and runs commands
@@ -140,20 +182,20 @@ class Console
     puts "@#{name}: \"#{message}\""
   end
 
-  def showInventory
+  def show_inventory
     user = @controller.getData('user')
     if user == nil
       log "No user has been initialized"
     else
       user = @controller.getData('user')
-      inventory = @controller.getInventoryPopulated
+      inventory = @controller.get_inventory_populated
       if inventory.length == 0
         puts "*-= INVENTORY IS EMPTY 0/50 =-*"
         return false
       else
         display_text = "*-= INVENTORY #{inventory.length}/50 =-*\n"
         inventory.each_with_index do |item, i|
-          price = @func.toReadableMoney(item['price'])
+          price = @func.to_readable_money(item['price'])
           display_text += "|#{i + 1}| [#{item['name']}] | \"#{item['description']} \" | price: #{price} |\n"
         end
         display(display_text)
@@ -163,7 +205,7 @@ class Console
   end
   def getFromInventory
     while true
-      inventory = showInventory()
+      inventory = show_inventory()
       if !inventory
         display "NO ITEMS TO SELECT"
         return false
@@ -191,7 +233,7 @@ class Console
   end
   def deleteFromInventory
     while true
-      inventory = showInventory()
+      inventory = show_inventory()
       if !inventory
         display "NO ITEMS TO SELECT"
         return false

@@ -1,9 +1,9 @@
 module StartModel
   def enter()
-    timeOfDay = @controller.timeOfDay
+    time_of_day = @controller.time_of_day
     day = @controller.getData('day')
 
-    if timeOfDay == 'morning' && day == 0
+    if time_of_day == 'morning' && day == 0
       @controller.at('console').display """
        You feel the soft breeze easing through your face
        As you begin to open your eyes, rays of sunlight overwhelm you
@@ -26,18 +26,18 @@ module StartModel
 
     if response == 1
       case
-      when timeOfDay == 'morning' || timeOfDay == 'midday'
+      when time_of_day == 'morning' || time_of_day == 'midday'
         @controller.at('console').display("You close your eyes and head back to sleep again...")
-        @controller.addTime(14400) #4 hours
-      when timeOfDay == 'afternoon'
+        @controller.add_time(14400) #4 hours
+      when time_of_day == 'afternoon'
         @controller.at('console').display("Seeing it's getting late you head back to sleep again...")
-        @controller.addTime(7200) #2 hours
-      when timeOfDay == 'evening'
+        @controller.add_time(7200) #2 hours
+      when time_of_day == 'evening'
         @controller.at('console').display("It's getting dark, but you still head back to sleep")
-        @controller.addTime(3600) #1 hour
-      when timeOfDay.include?('night')
+        @controller.add_time(3600) #1 hour
+      when time_of_day.include?('night')
         @controller.at('console').display("Seeing its dark you still head back to sleep")
-        @controller.addTime(1800) #30 min
+        @controller.add_time(1800) #30 min
       end
       return '_START'
     elsif response == 2

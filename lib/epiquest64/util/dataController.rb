@@ -8,35 +8,47 @@ class DataController
       file = open(filepath)
       @data[filename] = JSON.parse(file.read)
       @data[filename].freeze() # is immutable
+      # @data = {
+      #   'fishing_loot': [
+      #      {}
+      #      {}
+      #      {}
+      #    ],
+      #   'weapons': [
+      #      {}
+      #      {}
+      #      {}
+      #    ]
+      # }
     end
   end
 
-  def findById(collection, id)
-    data = @data[collection].dup
+  def findById(_id, ref = false)
+    collection = get_collection(ref)
 
-    data.each do |key, value|
-      if key === id
-        return value
+    collection.each do |item|
+      if item['_id'] === _id
+        return item
       end
     end
 
     return {}
   end
 
-  def findOne(collection, q = {})
-    data = @data[collection].dup
-    if q == {}
-      data.each do |key, value|
+  def findOne(q = {}, ref = false)
+    collection = get_collection(ref)
+    
+    if q.blank? # There is no query, return all
+      collection.each do |item|
         value['_ref'] = collection
-        value['_id'] = key
       end
-      return data
+      return collection
     end
 
-    data.each do |id, data|
+    collection.each do |item|
       match = false
       q.keys.each do |key| # For each key in query
-        if data[key] == q[key] # If the query[key] is == to the data[key]
+        if item[key] == q[key] # If the query[key] is == to the data[key]
           match = true
         else
           match = false
@@ -44,31 +56,30 @@ class DataController
         end
       end
       if match
-        data['_ref'] = collection
-        data['_id'] = id
-        return data
+        item['_ref'] = collection
+        return item
       end
     end
 
     return {}
   end
 
-  def find(collection, q = {})
-    data = @data[collection].dup
+  def find(q = {}, ref = false)
+    collection = get_collection(ref)
 
-    if q == {}
-      data.each do |key, value|
-        value['_ref'] = collection
-        value['_id'] = key
+    if q.empty?
+      collection.each do |item|
+        item['_ref'] = ref
       end
-      return data
+      return collection
     end
-    results = {}
 
-    data[collection].each do |id, data|
+    results = []
+
+    collection.each do |item|
       match = false
       q.keys.each do |key| # For each key in query
-        if data[key] == q[key] # If the query[key] is == to the data[key]
+        if item[key] == q[key] # If the query[key] is == to the item[key]
           match = true
         else
           match = false
@@ -76,9 +87,8 @@ class DataController
         end
       end
       if match
-        data['_id'] = id
-        data['_ref'] = collection
-        results[id] = data
+        item['_ref'] = collection
+        results << item # results.a0 = { _id: a0, name: '' }
       end
     end
 
@@ -86,14 +96,25 @@ class DataController
   end
 
   def populate(array)
-    populatedArray = []
+    populated_array = []
     array.each do |item|
-      # find id that matches in @data and add it to pArray
+      # find _id that matches in @data and add it to pArray
 
-      pItem = findById(item['_ref'], item['_id'])
-      populatedArray << pItem
+      populated_item = findById(item['_id'], item['_ref'])
+      populated_array << populated_item
     end
 
-    return populatedArray
+    return populated_array
   end
+
+  private
+    def get_collection(ref)
+      if (!ref) # Search all of the collections
+        # @data => { 'loot': [a, b], 'weapons': [c, d] }
+        # @data.values => [ [a, b], [c, d] ]
+        return @data.values.flatten # [ a, b, c, d ]
+      else # Search in the collection provided
+        return @data[ref]
+      end
+    end
 end

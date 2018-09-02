@@ -1,6 +1,6 @@
 module CityModel
   def enter
-    timeOfDay = @controller.timeOfDay
+    time_of_day = @controller.time_of_day
     puts "You arrive at the city entrance"
     
     response = @controller.at('console').prompt('What do you do now?', ['Leave to the beach', 'Go to the market', 'Explore'])
@@ -22,10 +22,10 @@ end
 
 module CityMarketModel
   def enter
-    timeOfDay = @controller.timeOfDay
+    time_of_day = @controller.time_of_day
     puts 'We arrive to the market.'
 
-    if timeOfDay.include? 'night'
+    if time_of_day.include? 'night'
       puts "NOTICE: Market is close during the night"
       response = @controller.at('console').prompt("What do you do now?", ["Head back to city entrance"])
       return '_CITY'

@@ -38,7 +38,7 @@ module BeachFishModel
         @controller.at('console').display "You caught a #{result['name']}! #{result['description']}"
         response = @controller.at('console').prompt("Keep item?", ["Yes", "No"])
         if response == 1
-          @controller.addToInventory(result)
+          @controller.addToInventory(result['_id'])
           
           @controller.at('console').display("Added #{result['name']} to inventory!")
         end
@@ -59,12 +59,12 @@ end
 
 module BeachDocksModel
   def enter
-    timeOfDay = @controller.timeOfDay;
+    time_of_day = @controller.time_of_day;
 
     user = @controller.getData('user');
     puts "You arrive at the docks"
 
-    if timeOfDay.include? "night"
+    if time_of_day.include? "night"
       @controller.at('console').display "The docks are closed at this time. Come back in the morning"
       return "_BEACH"
     else

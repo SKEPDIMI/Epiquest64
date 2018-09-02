@@ -51,7 +51,7 @@ class Snapper
         @controller.at('console').clearScreen()
         # @npcSnapper.buy
         # FOR TESTING:
-        @controller.addToInventory({'_id' => 'a1'}) # MISSING _REF
+        @controller.addToInventory('a1') # MISSING _REF
         @controller.at('console').display('Bought gold fish! Awesome!')
         response = @controller.at('console').prompt('Buy again?', ['Yes', 'No'])
         if response == 2
