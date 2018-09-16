@@ -49,7 +49,7 @@ class Controller
     end
   end
   def addToInventory(_id)
-    item = @data_controller.findById(_id, false)
+    item = @data_controller.findById(_id)
 
     if (item['type'] === '_money')
       @game_data['user'].money += item.price
@@ -59,8 +59,8 @@ class Controller
         @game_data['user'].inventory << {'_ref' => item['_ref'], '_id' => item['_id']}
       else
         response = @connected['console'].prompt("YOUR INVENTORY IS FULL! Would you like to make space or discard item?", [
-          'Yes',
-          'No'
+          'Make space',
+          'Discard item'
         ])
         if response == 1
           deleted = @connected['console'].deleteFromInventory
@@ -74,10 +74,9 @@ class Controller
     end
   end
   def get_inventory_populated
-    u_inventory = (@game_data['user'].inventory).dup
-    i_inventory = @data_controller.populate(u_inventory) # populated inventory
+    inventory = (@game_data['user'].inventory).dup
 
-    return i_inventory
+    return @data_controller.populate(inventory)
   end
   def addMoney(m)
     @game_data['user'].money += m
