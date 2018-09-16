@@ -26,17 +26,21 @@ class Snapper
       sell = true
       while sell == true
         @controller.at('console').clearScreen()
-        item = @controller.at('console').getFromInventory()
+        items = @controller.at('console').getFromInventory()
         @controller.at('console').clearScreen()
 
-        if !item
+        if items.empty?
           sell = false
           goodbye()
         else
-          puts "SOLD #{item['name']}"
+          total_price = items.collect{|i| i['price']}.reduce(&:+)
+          puts "Sold for #{total_price}"
           
-          @controller.addMoney(item['price']);
-          @controller.deleteOneFromInventory(item);
+          @controller.addMoney(total_price);
+
+          items.each do |item|
+            @controller.deleteOneFromInventory(item)
+          end
 
           response = @controller.at('console').prompt('Sell again?', ['Yes', 'No'])
           if response == 2
@@ -46,21 +50,19 @@ class Snapper
         end
       end
     elsif response == 2 # We want to buy from Snapper
-      buy = true
-      while buy == true
+      buying = true
+      while buying
         @controller.at('console').clearScreen()
-        # @npcSnapper.buy
-        # FOR TESTING:
-        @controller.addToInventory('a1') # MISSING _REF
+        @controller.addToInventory('a1')
         @controller.at('console').display('Bought gold fish! Awesome!')
         response = @controller.at('console').prompt('Buy again?', ['Yes', 'No'])
         if response == 2
-          buy = false
-          # @npcSnapper.goodbye
+          buying = false
+          @npcSnapper.goodbye
         end
       end
     elsif response == 3
-      # @npcSnapper.goobye
+      @npcSnapper.goodbye
     end
   end
 end
