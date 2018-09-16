@@ -208,24 +208,36 @@ class Console
       inventory = show_inventory()
       if !inventory
         display "NO ITEMS TO SELECT"
-        return false
+        return []
       else
         puts "-- SELECT AN ITEM --"
         puts "-- DO !cancel TO EXIT --"
         response = get_input()
         if response == "!cancel"
-          return false
+          return []
         end
-        response = response.to_i
-        chosen = inventory[response-1]
-        if response === 0 || !chosen
-          display "Item at this index does not exist"
-        else
-          clearScreen()
-          response = prompt("Chose #{chosen['name']}. Continue?", ["Yes", "No"]);
+        array = []
+        responses = response.split(' ')
 
+        responses.each do |index|
+          chosen = inventory[
+            index.to_i - 1
+          ]
+
+          if index == 0 || !chosen
+            display "Item at #{index} does not exist"
+          else
+            array << chosen
+          end
+        end
+
+        clearScreen()
+        if array.empty?
+          return []
+        else
+          response = prompt("Chosen #{array.map{|i| i['name']}.join(', ')}. Continue?", ["Yes", "No"]);
           if response == 1
-            return chosen
+            return array
           end
         end
       end
