@@ -91,6 +91,6 @@ class Map
   end
 
   def locations(id)
-    return @@locations[id]
+    return @@locations[id] || @@locations['_CITY']
   end
 end
