@@ -55,11 +55,11 @@ class Snapper
         response = @controller.at('console').prompt('Buy again?', ['Yes', 'No'])
         if response == 2
           buying = false
-          @npcSnapper.goodbye
+          goodbye
         end
       end
     elsif response == 3
-      @npcSnapper.goodbye
+      goodbye
     end
   end
 end
