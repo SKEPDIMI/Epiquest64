@@ -67,7 +67,7 @@ class Console
     if response[0] === '#' # This will detect commands from the user
       stripped = response.gsub(/\s+/, "")
       if (stripped === '#time')
-        display "Time is #{@controller.timeOfDay} (#{@controller.getData('time')} on day #{@controller.getData('day')})"
+        display "Time is #{@controller.time_of_day} (#{@controller.getData('time')} on day #{@controller.getData('day')})"
       elsif (stripped == "#get")
         # Find arguments and return data
         user = @controller.getData('user')
