@@ -17,3 +17,4 @@ Install gems with `bundle install`, then start the game with `ruby ./bin/app.rb`
  - [ ] Added pane to display all user stats
  - [ ] Adding armor and other wearables
  - [ ] Adding interactivity with NPC's
+ - [ ] Handling data
