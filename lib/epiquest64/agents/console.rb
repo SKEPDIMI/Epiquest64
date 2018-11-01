@@ -1,7 +1,40 @@
+require 'ffi-ncurses'
 require_relative '../util/func'
+include FFI::NCurses
+
+$USE_NCURSES = ARGV.delete('--use-ncurses')
+
+def print_c(s)
+  if $USE_NCURSES
+    printw s + "\n"
+    refresh
+  else
+    puts s
+  end
+end
+
+def gets_c()
+  if $USE_NCURSES
+    # getstr don't work D:
+    s = ''
+    while true
+      c = getch
+      if c.chr == "\n" then break end
+        s += c.chr
+      end
+      return s
+  else
+    $stdin.gets
+  end
+end
 
 class Console
   def initialize(controller)
+    if $USE_NCURSES
+      initscr
+      start_color
+      init_pair 1, COLOR_RED, COLOR_BLACK
+    end
     @func = Func.new
     @controller = controller
     @start_time = false
@@ -13,7 +46,7 @@ class Console
   end
 
   def log(message)
-    puts("log >> #{message.upcase}")
+    print_c("log >> #{message.upcase}")
   end
 
   def run(command)
@@ -50,7 +83,7 @@ class Console
       show_inventory()
     when "#gen_luck"
       x = @func.generate_luck
-      puts x
+      print_c x
     when "#exit"
       exit 0
     else
@@ -63,7 +96,7 @@ class Console
     @start_time = Time.now
 
     print "\nresponse > "
-    response = $stdin.gets.chomp.downcase
+    response = gets_c.chomp.downcase
     if response[0] === '#' # This will detect commands from the user
       stripped = response.gsub(/\s+/, "")
       if (stripped === '#time')
@@ -97,7 +130,7 @@ class Console
         end
       elsif stripped == '#gen_luck'
         x = @func.generate_luck
-        puts x
+        print_c x
       elsif stripped == '#exit'
         exit(0)
       elsif stripped == "#inventory"
@@ -115,25 +148,48 @@ class Console
   end
 
   def clearScreen
-    puts %x{clear}
+    if $USE_NCURSES
+      clear
+    else
+      print_c %x{clear}
+    end
   end
 
-  def print_format(message, format = false)
-    case true
-    when format == false
-      puts message
-    when format == 'red'
-      puts "\e[31m#{message}\e[0m"
-    when format == 'italic'
-      puts "\e[3m#{message}\e[23m"
-    when format == 'underline'
-      puts "\e[4m#{message}\e[24m"
+  def print_format(message, format = nil)
+    if $USE_NCURSES
+      case format
+      when 'red'
+        attron COLOR_PAIR(1)
+        print_c message
+        attroff COLOR_PAIR(1)
+      when 'italic'
+        attron A_ITALIC
+        print_c message
+        attroff A_ITALIC
+      when 'underline'
+        attron A_UNDERLINE
+        print_c message
+        attroff A_UNDERLINE
+      else
+        print_c message
+      end
+    else
+      case format
+      when 'red'
+        print_c "\e[31m#{message}\e[0m"
+      when 'italic'
+        print_c "\e[3m#{message}\e[23m"
+      when 'underline'
+        print_c "\e[4m#{message}\e[24m"
+      else
+        print_c message
+      end
     end
   end
 
   def display(message)
     print_format("\n# #{message}\n", 'red')
-    $stdin.gets.chomp
+    gets_c.chomp
   end
 
   def prompt(message, options = false, format = false)
@@ -142,7 +198,7 @@ class Console
         clearScreen()
         print_format("\n# #{message}\n", 'red')
         options.each do |option| # timeall of the options for the user
-          puts "* #{option}"
+          print_c "* #{option}"
         end
         response = get_input()
 
@@ -179,7 +235,7 @@ class Console
   end
 
   def dialogue(name, message)
-    puts "@#{name}: \"#{message}\""
+    print_c "@#{name}: \"#{message}\""
   end
 
   def show_inventory
@@ -190,7 +246,7 @@ class Console
       user = @controller.getData('user')
       inventory = @controller.get_inventory_populated
       if inventory.length == 0
-        puts "*-= INVENTORY IS EMPTY 0/50 =-*"
+        print_c "*-= INVENTORY IS EMPTY 0/50 =-*"
         return false
       else
         display_text = "*-= INVENTORY #{inventory.length}/50 =-*\n"
@@ -210,8 +266,8 @@ class Console
         display "NO ITEMS TO SELECT"
         return []
       else
-        puts "-- SELECT AN ITEM --"
-        puts "-- DO !cancel TO EXIT --"
+        print_c "-- SELECT AN ITEM --"
+        print_c "-- DO !cancel TO EXIT --"
         response = get_input()
         if response == "!cancel"
           return []
@@ -250,8 +306,8 @@ class Console
         display "NO ITEMS TO SELECT"
         return false
       else
-        puts "-- DELETE AN ITEM --"
-        puts "-- DO !cancel TO EXIT --"
+        print_c "-- DELETE AN ITEM --"
+        print_c "-- DO !cancel TO EXIT --"
         response = get_input()
         if response == "!cancel"
           return false
