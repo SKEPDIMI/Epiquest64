@@ -4,12 +4,24 @@ include FFI::NCurses
 
 $USE_NCURSES = ARGV.delete('--use-ncurses')
 
-def print_c(s)
+$border_main_win = nil
+$border_choice_win = nil
+$main_win = nil
+$choice_win = nil
+
+def print_c(s, win: $main_win, nl: true)
   if $USE_NCURSES
-    printw s + "\n"
-    refresh
+    # wclear win
+    if nl then s += "\n" end
+    wprintw win, s
+    # box win, 0, 0
+    wrefresh win
   else
-    puts s
+    if nl
+      puts s
+    else
+      print s
+    end
   end
 end
 
@@ -18,7 +30,7 @@ def gets_c()
     # getstr don't work D:
     s = ''
     while true
-      c = getch
+      c = wgetch $choice_win
       if c.chr == "\n" then break end
         s += c.chr
       end
@@ -34,6 +46,15 @@ class Console
       initscr
       start_color
       init_pair 1, COLOR_RED, COLOR_BLACK
+
+      $main_win = newwin 20, 100, 1, 1
+      $choice_win = newwin 10, 100, 23, 1
+      $border_main_win = newwin 22, 102, 0, 0
+      $border_choice_win = newwin 12, 102, 22, 0
+      box $border_main_win, 0, 0
+      box $border_choice_win, 0, 0
+      wrefresh $border_main_win
+      wrefresh $border_choice_win
     end
     @func = Func.new
     @controller = controller
@@ -95,7 +116,8 @@ class Console
     # Please dont use get_input()/prompt() inside get_input :)
     @start_time = Time.now
 
-    print "\nresponse > "
+    wclear $choice_win
+    print_c "response > ", nl: false, win: $choice_win
     response = gets_c.chomp.downcase
     if response[0] === '#' # This will detect commands from the user
       stripped = response.gsub(/\s+/, "")
@@ -149,7 +171,7 @@ class Console
 
   def clearScreen
     if $USE_NCURSES
-      clear
+      wclear $main_win
     else
       print_c %x{clear}
     end
@@ -192,24 +214,59 @@ class Console
     gets_c.chomp
   end
 
+  def variant_select(vars)
+    wclear $choice_win
+    vars.each_with_index do |v, i|
+      mvwprintw $choice_win, i, 2, v
+    end
+    i = 0
+    keypad $choice_win, true
+    curs_set 0
+    noecho
+    while true
+      mvwprintw $choice_win, i, 0, '>'
+      c = wgetch $choice_win
+      case c
+      when KEY_UP
+        mvwprintw $choice_win, i, 0, ' '
+        i = if i == 0 then vars.length - 1 else i - 1 end
+      when KEY_DOWN
+        mvwprintw $choice_win, i, 0, ' '
+        i = if i + 1 == vars.length then 0 else i + 1 end
+      when "\n".ord
+        break
+      end
+    end
+    keypad $choice_win, false
+    curs_set 1
+    echo
+    return i
+  end
+
   def prompt(message, options = false, format = false)
     if options # Make sure the user's option is valid
-      while true
-        clearScreen()
+      if $USE_NCURSES
+        clearScreen
         print_format("\n# #{message}\n", 'red')
-        options.each do |option| # timeall of the options for the user
-          print_c "* #{option}"
-        end
-        response = get_input()
+        return variant_select(options) + 1
+      else
+        while true
+          clearScreen()
+          print_format("\n# #{message}\n", 'red')
+          options.each do |option| # timeall of the options for the user
+            print_c "* #{option}"
+          end
+          response = get_input()
 
-        if response.gsub(/\s+/, "") == ""
-          display "> Empty response"
-          next
-        end
+          if response.gsub(/\s+/, "") == ""
+            display "> Empty response"
+            next
+          end
 
-        options.each_with_index do |option, i|
-          if option.downcase.include? response
-            return i+1 # Return the index+1 of the selected option
+          options.each_with_index do |option, i|
+            if option.downcase.include? response
+              return i+1 # Return the index+1 of the selected option
+            end
           end
         end
       end
