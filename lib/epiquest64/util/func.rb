@@ -12,10 +12,14 @@ class Func
 
     res = "#{copper} copper"
 
-    if gold > 0 then
+    if silver > 0
+      res = "#{silver} silver " + res
+    end
+
+    if gold > 0
       res = "#{gold} gold " + res
     end
-    if platinum > 0 then
+    if platinum > 0
       res = "#{platinum} platinum " + res
     end
 
