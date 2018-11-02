@@ -6,8 +6,10 @@ $USE_NCURSES = ARGV.delete('--use-ncurses')
 
 $border_main_win = nil
 $border_choice_win = nil
+$border_stats_win = nil
 $main_win = nil
 $choice_win = nil
+$stats_win = nil
 
 def print_c(s, win: $main_win, nl: true)
   if $USE_NCURSES
@@ -27,6 +29,7 @@ end
 
 def gets_c()
   if $USE_NCURSES
+
     # getstr don't work D:
     s = ''
     while true
@@ -47,12 +50,19 @@ class Console
       start_color
       init_pair 1, COLOR_RED, COLOR_BLACK
 
-      $main_win = newwin 20, 100, 1, 1
-      $choice_win = newwin 10, 100, 23, 1
-      $border_main_win = newwin 22, 102, 0, 0
-      $border_choice_win = newwin 12, 102, 22, 0
+      $stats_win = newwin 5, 100, 1, 1
+      $main_win = newwin 20, 100, 8, 1
+      $choice_win = newwin 5, 100, 30, 1
+
+      $border_stats_win = newwin 7, 102, 0, 0
+      $border_main_win = newwin 22, 102, 7, 0
+      $border_choice_win = newwin 7, 102, 29, 0
+
+      box $border_stats_win, 0, 0
       box $border_main_win, 0, 0
       box $border_choice_win, 0, 0
+
+      wrefresh $border_stats_win
       wrefresh $border_main_win
       wrefresh $border_choice_win
     end
@@ -68,6 +78,16 @@ class Console
 
   def log(message)
     print_c("log >> #{message.upcase}")
+  end
+
+  def update_stats
+    user = @controller.getData 'user'
+
+    if $USE_NCURSES
+      wclear $stats_win
+      wprintw $stats_win, "Name: #{user.name}\nMoney: #{@func.to_readable_money(user.money)}\nFishing rod health: #{user.fishingRod.health}\nXP: #{user.xp}\nLevel: #{user.level}"
+      wrefresh $stats_win
+    end
   end
 
   def run(command)
