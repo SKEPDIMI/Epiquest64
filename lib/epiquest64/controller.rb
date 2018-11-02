@@ -17,6 +17,9 @@ class Controller
   end
   def setData(prop, value)
     @game_data[prop] = value
+    if prop == 'user'
+      at('console').update_stats
+    end
   end
   def add_time(seconds = 0) # Changes from real life seconds to game hours / days
     # 8.64 seconds in a day
@@ -80,6 +83,7 @@ class Controller
   end
   def addMoney(m)
     @game_data['user'].money += m
+    at('console').update_stats
   end
   def deleteOneFromInventory(item)
     _inventory = @game_data['user'].inventory
