@@ -13,10 +13,8 @@ $stats_win = nil
 
 def print_c(s, win: $main_win, nl: true)
   if $USE_NCURSES
-    # wclear win
     if nl then s += "\n" end
     wprintw win, s
-    # box win, 0, 0
     wrefresh win
   else
     if nl
@@ -29,7 +27,6 @@ end
 
 def gets_c()
   if $USE_NCURSES
-
     # getstr don't work D:
     s = ''
     while true
@@ -37,7 +34,9 @@ def gets_c()
       if c.chr == "\n" then break end
         s += c.chr
       end
-      return s
+    wclear $choice_win
+    wrefresh $choice_win
+    return s
   else
     $stdin.gets
   end
@@ -229,9 +228,9 @@ class Console
     end
   end
 
-  def display(message)
+  def display(message, wait = true)
     print_format("\n# #{message}\n", 'red')
-    gets_c.chomp
+    gets_c.chomp if wait
   end
 
   def variant_select(vars)
@@ -260,6 +259,8 @@ class Console
     keypad $choice_win, false
     curs_set 1
     echo
+    wclear $choice_win
+    wrefresh $choice_win
     return i
   end
 
