@@ -1,6 +1,8 @@
 # Epiquest64
 Epiquest! But in the terminal
 
+Now being used for ideas!
+
 # Getting started
 
 First, ensure you have Ruby and Bundler installed. 
