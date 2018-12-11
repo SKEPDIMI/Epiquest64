@@ -24,7 +24,7 @@
     "type": "fish",
     "name": "Dark Fish",
     "rarity": 1,
-    "description": "",
+    "description": "This fish only surfaces in the night. I wonder why that is",
     "requirements": {
       "time": "night midnight"
     },
